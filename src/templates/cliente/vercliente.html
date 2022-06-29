@@ -1,0 +1,96 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row ">
+                    <div class="col-sm-4">
+                        <div class="card card-event">
+                            <div class="card-block">
+                                <div class="row align-items-center justify-content-center">
+                                    <div class="col">
+                                        <h5 class="m-0">{{ cliente.username}} {{ cliente.lastname }}</h5>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fab fa-angellist text-c-purple f-40 "></i>
+                                        <label class="label f-14 f-w-400 float-right">{{ cliente.status }}</label>
+                                    </div>
+                                </div>
+                                <h6 class="text-muted mt-4 mb-0">Se registro el {{ cliente.created }} </h6>
+                                <h2 class="mt-3 f-w-300">{{cliente.vehiculos|length}}<sub
+                                        class="text-muted f-14">Vehiculo Registrados</sub></h2>
+
+                                <a href="../vehiculo/{{cliente.id}}" class="label theme-bg text-white f-12">Agregar
+                                    vehiculo</a>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- [ basic-table ] start -->
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Vehiculo de {{cliente.username}} {{cliente.lastname}}</h5>
+                            <span class="d-block m-t-5">use class <code>table</code> inside table element</span>
+                        </div>
+                        <div class="card-block table-border-style">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Coche</th>
+                                            <th>Año</th>
+                                            <th>Placa</th>
+                                            <th>Color</th>
+                                            <th>Fecha</th>
+                                            <th>Stado</th>
+                                            <th>Operaciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for vehiculo in cliente.vehiculos %}
+                                        <tr>
+                                            <th scope="row">{{vehiculo.id}}</th>
+                                            <td>{{vehiculo.marcas}} {{vehiculo.modelos}}</td>
+                                            <td>{{vehiculo.age}}</td>
+                                            <td>{{vehiculo.placa}}</td>
+                                            <td>{{vehiculo.color}}</td>
+                                            <td>{{vehiculo.created}}</td>
+                                            <td>{{vehiculo.status}}</td>
+                                            <td>
+                                                <a href="../vehiculo/ver/{{vehiculo.id}}" class="label theme-bg text-white f-12">
+                                                    ver vehiculo
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ basic-table ] end -->
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    {% block title %} Pagina de inicio {% endblock %}
+{% endblock %}
+
+{% block content %}
+    {% if current_user  %}
+        {{ current_user.username }}
+    {% endif %}
+{% endblock %}

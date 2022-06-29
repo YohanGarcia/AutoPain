@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    {% block title %}Aministra tu Clietes{% endblock %}
+{% endblock %}
+
+{% block content %}
+<ul>
+    {% for cliente in clientes %}
+        <li>
+            <h4>{{ cliente.username }} {{ cliente.lastname }}</h4>
+            <p>{{ cliente.telefono }}</p>
+            <p>{{ cliente.created.strftime('%d-%m-%Y') }}</p>
+        </li>
+    {% endfor %}
+</ul>    
+
+{% endblock %}

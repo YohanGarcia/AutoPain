@@ -1,0 +1,151 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" />
+{% endblock stylesheets %}
+
+{% block content %}<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Form Elements</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Form Componants</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:">Form Elements</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Basic Componant</h5>
+                            </div>
+                            <div class="card-body">
+                                <h5>Form controls</h5>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-sm-8">
+                                        <span class="mb-0 text-muted">
+                                            {% if msg %}
+                                            <span class="text-danger">{{ msg | safe }}</span>
+                                            {% else %}
+                                            Add your credentials
+                                            {% endif %}
+                                        </span>
+                                        <br />
+                                        <br />
+                    
+                                        <!-- Hide the form on success -->
+                                        {% if success %}
+                    
+                                            <a href="{{ url_for('auth.login') }}" class="btn btn-primary shadow-2 mb-4">Sign IN</a>
+                    
+                                        {% else %}
+                                        <form action="" method="post">
+                                            {{ form.hidden_tag() }}
+                                            <div class="row">
+                                                <div class="col-md-6 form-group">
+                                                    <label>Seleciona la Marca</label>
+
+                                                    <select name="car_brand" data-live-search="true" id="car_brand"
+                                                        class="form-control" title="Marcas">
+                                                        {% for row in marcas %}
+                                                        <option value="{{row.id}}">{{row.name}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <label>Seleciona el Modelo </label>
+                                                    <select name="car_models" data-live-search="true" id="car_models"
+                                                        class="form-control" title="Modelos"> </select>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ form.placa(placeholder="Placa", class="form-control") }}
+                                                </div>
+
+                                                <div class="col-md-6 form-group">
+                                                    {{ form.age(placeholder="Año del Coche", class="form-control") }}
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    {{ form.color(placeholder="Color", class="form-control") }}
+                                                </div>
+
+                                            </div>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                                        </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#car_brand").selectpicker();
+
+        $("#car_models").selectpicker();
+
+        function load_data(type, marca_id) {
+            $.ajax({
+                url: "/vehiculo/carbrand",
+                method: "POST",
+                data: { type: type, marca_id: marca_id },
+                dataType: "json",
+                success: function (data) { //alert(marca_id)
+                    var html = "";
+                    for (var count = 0; count < data.length; count++) {
+                        html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+                    }
+                    if (type == "carData") {
+                        $("#car_brand").html(html);
+                        $("#car_brand").selectpicker("refresh");
+                    } else {
+                        $("#car_models").html(html);
+                        $("#car_models").selectpicker("refresh");
+                    }
+                },
+            });
+        }
+
+        $(document).on("change", "#car_brand", function () {
+            var marca_id = $("#car_brand").val();
+            load_data("carModeldata", marca_id);
+        });
+    });
+</script>
+{% endblock javascripts %}
