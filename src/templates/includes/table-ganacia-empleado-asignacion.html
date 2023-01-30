@@ -1,0 +1,42 @@
+<div class="col-md-4">
+    <div class="accordion">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    Ganancia de los empleados
+                </h5>
+            </div>
+            <!-- [ stiped-table ] start -->
+            <div class="card-block ">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="unread">
+                                <th>Empleado</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for (nombre,apellido), total in empleados_total.items() %}
+
+                            <tr class="unread">
+
+                                <td>
+                                    {{nombre}} {{apellido}}
+                                </td>
+
+                                <td>
+                                    {{format_number(total)}}
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- [ stiped-table ] end -->
+        </div>
+    </div>
+</div>

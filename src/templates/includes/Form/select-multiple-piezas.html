@@ -1,0 +1,16 @@
+<div class="col-md-12">
+    <div class="col-md-12">
+        <div class="form-group">
+            <select id="piezas" name="mymultiselect" data-live-search="true"
+                class="selectpicker form-control form-control-lg" multiple>
+                <option disabled selected>Seleccionar piezas:</option>
+                {% for pieza in piezas %}
+                <option value="{{ pieza.id }}">{{pieza.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button type="submit" class="btn btn-primary ml-4 mb-3">Submit</button>
+    </div>
+</div>

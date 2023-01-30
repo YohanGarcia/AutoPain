@@ -1,0 +1,73 @@
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="pcoded-content">
+  <div class="pcoded-inner-content">
+    <div class="main-body">
+      <div class="page-wrapper">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <div class="col">
+            <div class="col-sm-12">
+              <h5 class="mb-3">Lista de trabajos</h5>
+              <hr />
+
+              <div class="accordion">
+                <div class="card">
+                  <div class="card-header">
+                    <h5 class="mb-0">
+                      {{asignacionpieza.serviciopiezas.piezas.name}}
+                    </h5>
+                  </div>
+                  <!-- [ stiped-table ] start -->
+
+                  <div class="card-block table-border-style">
+                    <div class="table-responsive">
+                      <table class="table table-striped">
+                        <thead>
+                          <tr>
+                            <th>Trabajos</th>
+                            <th>Empleado</th>
+                            <th>Precio</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for asignaciones in asignacionpiezas %}
+                          <tr>
+                            <td >
+                              {{ asignaciones.trabajos.name }}
+                            </td>
+                            <td>
+                                {{ asignaciones.empleados.name }}
+                            </td>
+                            <td>
+                                {{ asignaciones.trabajoprecios.precio}}
+                            </td>
+                           
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- [ stiped-table ] end -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- [ collapse ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

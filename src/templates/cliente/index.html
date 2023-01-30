@@ -1,18 +1,84 @@
-{% extends 'base.html' %}
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
 
-{% block header %}
-    {% block title %}Aministra tu Clietes{% endblock %}
-{% endblock %}
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
 
-{% block content %}
-<ul>
-    {% for cliente in clientes %}
-        <li>
-            <h4>{{ cliente.username }} {{ cliente.lastname }}</h4>
-            <p>{{ cliente.telefono }}</p>
-            <p>{{ cliente.created.strftime('%d-%m-%Y') }}</p>
-        </li>
-    {% endfor %}
-</ul>    
+<!--[ Recent Users ] start-->
+<div class="col-xl-8 col-md-6 mx-auto">
+  <div class="card Recent-Users">
+    <div class="card-header">
+      <h5>Lista de Clientes</h5>
+    </div>
+    <div class="card-block px-0 py-3">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <tbody>
+            {% for cliente in clientes.items %}
+
+            <tr class="unread">
+              <td>
+                <h6 class="mb-1">
+                  {{ cliente.username }} {{ cliente.lastname }}
+                </h6>
+                <p class="m-0">{{ cliente.telefono }}</p>
+              </td>
+              <td>
+                <h6 class="text-muted">
+                  <i class="m-r-15"></i>Registrado el {{current_date_format(cliente.created) }}
+                </h6>
+              </td>
+              <td>
+                <a href="../cliente/ver/{{cliente.id}}" class="label theme-bg2 text-white f-12">ver</a
+                ><a href="#!" class="label theme-bg text-white f-12">Approve</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="pagination mx-auto">
+      <nav aria-label="Page navigation example ">
+        <ul class="pagination">
+          {% if clientes.has_prev %}
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="{{ url_for('cliente', page=clientes.prev_num) }}"
+              aria-label="Previous"
+            >
+              {{ '<<<' }}
+            </a>
+          </li>
+          {% endif %} {% for number in clientes.iter_pages() %} {% if
+          clientes.page != number %}
+          <li class="page-item">
+            <a class="page-link" href="{{ url_for('cliente', page=number) }}">
+              {{ number }}
+            </a>
+          </li>
+          {% else %}
+          <li class="page-item active">
+            <span class="page-link"
+              >{{ number }}<span class="sr-only">(current)</span></span
+            >
+          </li>
+          {% endif %} {% endfor %} {% if clientes.has_next %}
+          <li class="page-item">
+            <a
+              class="page-link"
+              href="{{ url_for('cliente', page=clientes.next_num) }}"
+              aria-label="Next"
+            >
+              {{ '>>>' }}
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<!--[ Recent Users ] end-->
 
 {% endblock %}

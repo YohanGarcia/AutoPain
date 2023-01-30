@@ -1,6 +1,6 @@
-from src import db
 from sqlalchemy.orm import relationship
-
+from datetime import datetime
+from src import db
 
 class Marca(db.Model):
     __tablename__ = "marcas"
@@ -10,7 +10,9 @@ class Marca(db.Model):
     modelos = relationship("Modelo", back_populates="marcas")
     vehiculos = relationship('Vehiculo', back_populates='marcas')
 
-
+    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    status = db.Column(db.Boolean, unique=False, default=True) 
+    
     def __init__(self, name) -> None:
         self.name = name
     def __repr__(self) -> str:
@@ -25,6 +27,9 @@ class Modelo(db.Model):
     marcas = relationship("Marca", back_populates="modelos")
 
     vehiculos = relationship('Vehiculo', back_populates='modelos')
+
+    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    status = db.Column(db.Boolean, unique=False, default=True)
 
     def __init__(self, name, marca_id) -> None:
         self.name = name

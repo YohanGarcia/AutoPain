@@ -1,10 +1,11 @@
+import os
 class Config:
     DEBUG = True
     TESTING = True
 
     #Conection Mysql
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost:3306/python_autopain"
+    SQLALCHEMY_DATABASE_URI =  "sqlite:///" + os.path.abspath(os.getcwd()) + "/database.db"
 
 class ProductionConfig(Config):
     DEBUG=False

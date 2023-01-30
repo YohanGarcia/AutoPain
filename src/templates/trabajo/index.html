@@ -1,0 +1,136 @@
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="pcoded-content">
+  <div class="pcoded-inner-content">
+    <!-- [ breadcrumb ] start -->
+    <div class="page-header">
+      <div class="page-block">
+        <div class="row align-items-center">
+          <div class="col-md-12">
+            <div class="page-header-title">
+              <h5 class="m-b-10">Form Elements</h5>
+            </div>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="/"><i class="feather icon-home"></i></a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="javascript:">Form Componants</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="javascript:">Form Elements</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ breadcrumb ] end -->
+    <div class="main-body">
+      <div class="page-wrapper">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h5>Registro de tipos de trabajos</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-8">
+                    <form
+                      role="form"
+                      method="post"
+                      action="{{ url_for('trabajo.trabajo_create') }}"
+                    >
+                      <div class="form-group">
+                        <input
+                          type="text"
+                          name="name"
+                          id=""
+                          class="form-control"
+                        />
+                      </div>
+                      <button type="submit" class="btn btn-primary">
+                        enviar
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-header">
+                <h5>Registro de Precios</h5>
+              </div>
+              <div class="col-md-12">
+              <form role="form" method="post" action="/trabajo/precio">
+                <div class="form-group">
+                  <select
+                    class="form-control"
+                    id="modelo_create"
+                    name="trabajo"
+                  >
+                    <option value="">Seleciona un trabajo</option>
+                    {% for trabajo in trabajos %}
+                    <option value="{{trabajo.id}}">{{trabajo.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Precio</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="precio"
+                    placeholder="Ingresa el precio"
+                  />
+                </div>
+                <button type="submit" class="btn btn-primary">enviar</button>
+              </form>
+            </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="col-sm-12">
+              <h5 class="mb-3">Lista de trabajos</h5>
+              <hr />
+
+              <div class="accordion">
+                <div class="card">
+                  {% for trabajo in trabajos %}
+                  <div class="card-header">
+                    <h5 class="mb-0">{{trabajo.name}}</h5>
+                  </div>
+                  <div class="card-body collapse show">
+                    <ul>
+                      {% for precio in trabajo.trabajoprecios %}
+                      <li class="mb-0">
+                        <h4>{{precio.precio}}</h4>
+                      </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- [ collapse ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

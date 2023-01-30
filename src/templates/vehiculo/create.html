@@ -11,24 +11,7 @@
 
 {% block content %}<div class="pcoded-content">
     <div class="pcoded-inner-content">
-        <!-- [ breadcrumb ] start -->
-        <div class="page-header">
-            <div class="page-block">
-                <div class="row align-items-center">
-                    <div class="col-md-12">
-                        <div class="page-header-title">
-                            <h5 class="m-b-10">Form Elements</h5>
-                        </div>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Form Componants</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Form Elements</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- [ breadcrumb ] end -->
+      
         <div class="main-body">
             <div class="page-wrapper">
                 <!-- [ Main Content ] start -->
@@ -39,8 +22,6 @@
                                 <h5>Basic Componant</h5>
                             </div>
                             <div class="card-body">
-                                <h5>Form controls</h5>
-                                <hr>
                                 <div class="row">
                                     <div class="col-sm-8">
                                         <span class="mb-0 text-muted">
@@ -75,7 +56,8 @@
                                                 <div class="col-md-6 form-group">
                                                     <label>Seleciona el Modelo </label>
                                                     <select name="car_models" data-live-search="true" id="car_models"
-                                                        class="form-control" title="Modelos"> </select>
+                                                        class="form-control" title="Modelos"> 
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-6 form-group">
                                                     {{ form.placa(placeholder="Placa", class="form-control") }}

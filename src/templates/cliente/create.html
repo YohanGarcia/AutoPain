@@ -1,73 +1,74 @@
-{% extends "layouts/base.html" %}
-
-{% block title %} UI Forms {% endblock %} 
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
-
-{% block content %}
-
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
 <div class="pcoded-content">
-    <div class="pcoded-inner-content">
-        <!-- [ breadcrumb ] start -->
-        <div class="page-header">
-            <div class="page-block">
-                <div class="row align-items-center">
+  <div class="pcoded-inner-content">
+    <div class="main-body">
+      <div class="page-wrapper">
+        <!-- [ Main Content ] start -->
+
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <h5>Crear Nuevo Cliente</h5>
+              </div>
+              <div class="card-body">
+
+                {% from "_macros.html" import render_field %}
+
+                <form method="post" action="">
+                  <div class="row">
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        {{ render_field(form.username, class='form-control')}}
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        {{ render_field(form.lestname, class='form-control')}}
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="telefono">Número de teléfono:</label>
+                      <input type="text" id="telefono" class="form-control" name="telefono" oninput="formatearTelefono()">
+                      <span class="text-danger" id="errorTelefono"></span>
+                      
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      {{ render_field(form.cedula, class='form-control')}}
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+
+                    <div class="form-group">
+                      {{ render_field(form.direccion, class='form-control')}}
+                    </div>
+                  </div>
                     <div class="col-md-12">
-                        <div class="page-header-title">
-                            <h5 class="m-b-10">Form Elements</h5>
-                        </div>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Form Componants</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:">Form Elements</a></li>
-                        </ul>
+                      <button type="submit" class="btn btn-primary">
+                        Submit
+                      </button>
                     </div>
-                </div>
+                  </div>
+                </form>
+              </div>
             </div>
+          </div>
         </div>
-        <!-- [ breadcrumb ] end -->
-        <div class="main-body">
-            <div class="page-wrapper">
-                <!-- [ Main Content ] start -->
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <h5>Basic Componant</h5>
-                            </div>
-                            <div class="card-body">
-                                <h5>Form controls</h5>
-                                <hr>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <form role="form" method="post" action="">
-                                            {{ form.hidden_tag() }}
-
-                                            <div class="form-group">
-                                                {{ form.username(placeholder="Username", class="form-control") }}
-                                            </div>
-
-                                            <div class="form-group">
-                                                {{ form.lastname(placeholder="lastname", class="form-control") }}
-                                            </div>
-                                            <div class="form-group">
-                                                {{ form.telefono(placeholder="Telefono", class="form-control") }}
-                                            </div>
-                                          
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-                                        </form>
-                                    </div>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- [ Main Content ] end -->
-            </div>
-        </div>
+      </div>
+      <!-- [ Main Content ] end -->
     </div>
+  </div>
+</div>
 </div>
 
 {% endblock content %}

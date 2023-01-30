@@ -1,0 +1,120 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Registro de Piesa</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form role="form" method="post" action="/pieza/create">
+                                            {% from "_macros.html" import render_field %}
+
+
+                                            <div class="form-group">
+                                                {{ render_field(form.name, class='form-control')}}
+                                            </div>
+                                            <div class="text-center pt-3">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Registro de pieza y su precio </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="mb-0 text-muted">
+                                            {% if msg %}
+                                            <span class="text-danger">{{ msg | safe }}</span>
+                                            {% endif %}
+                                        </span>
+                                        <form role="form" method="post" action="/pieza/precio">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="Modelo">Seleciona una Marca</label>
+                                                        <select class="form-control" id="modelo_create" name="id_pieza">
+                                                            <option value="">Seleciona una pieza</option>
+                                                            {% for pieza in piezas %}
+                                                            <option value="{{pieza.id}}">{{pieza.name}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Precio</label>
+                                                        <input type="number" class="form-control" name="precio"
+                                                            placeholder="Ingresa el precio" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 text-center pt-3">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <h5 class="mb-3">Lista de Coches</h5>
+                        <hr />
+
+                        <div class="accordion">
+                            <div class="card">
+                                {% for pieza in piezas %}
+                                <div class="card-header">
+                                    <h5 class="mb-0">{{pieza.name}}</h5>
+                                </div>
+                                <div class="card-body collapse show">
+                                    <ul>
+                                        {% for precio in pieza.pieza_precios %}
+                                        <li class="mb-0">
+                                            <h4>{{precio.pieza_precio}}</h4>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ collapse ] end -->
+                </div>
+                <!-- [ Main Content ] end -->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

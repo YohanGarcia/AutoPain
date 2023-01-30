@@ -1,0 +1,231 @@
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/mobiscroll.javascript.min.css') }}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" />
+{% endblock stylesheets %} {% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    {% include 'includes/datos-servicio-card.html' %}
+                    {% include 'includes/producto-consumido.html' %}
+                    {% include 'includes/table-ganacia-empleado-asignacion.html' %}
+                    <div class="col-md-12 mx-md-auto">
+                        <!-- Botón 1 -->
+                        <button id="button1" class="btn btn-secondary" onclick="showForm1()">Agregar Piezas</button>
+
+                        <!-- Botón 2 -->
+                        <button id="button2" class="btn btn-secondary" onclick="showForm2()">Asignar Precios a cada pieza</button>
+                        <!-- Botón 3 -->
+                        <button id="button3" class="btn btn-secondary" onclick="showForm3()">Asignar Empleados</button>
+                        <!-- Botón 4 -->
+                        <button id="button4" class="btn btn-secondary" onclick="showForm4()">Consumir Productos</button>
+                    </div>
+
+                    <div class="col-md-12" id="form1" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    Selecione las piezas a pintar
+                                </h5>
+                            </div>
+                            <form
+                                action="{{ url_for('pintura-detalle.pieza_create_detalle',servicio_id=servicio.id,vehiculo_id=vehiculo.id) }}"
+                                method="post">
+                                {% include 'includes/Form/select-multiple-piezas.html' %}
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" id="form2" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    Agregar el precio de cada pieza
+                                </h5>
+                            </div>
+                            <form
+                                action="{{ url_for('pintura-detalle.pieza_precio',servicio_id=servicio.id,vehiculo_id=vehiculo.id) }}"
+                                method="post">
+                                <div class="row">
+                                    {% for index, pieza in enumerate_serviciopiezas(servicio_id) %}
+                                    {% if pieza.pieza_precio_id %}
+                                    <div class="col-md-6">
+                                        <label for="">{{pieza.piezas.name}}:
+                                            {{format_number(pieza.pieza_precios.pieza_precio)}}</label>
+                                        <input type="hidden" name="pieza_id{{index+1}}" value={{pieza.piezas.id}}>
+                                        <select class="form-control form-control-lg" name="id_pieza_precio{{index+1}}">
+                                            {% for precio in pieza.piezas.pieza_precios %}
+                                            <option value={{precio.id}} disabled selected>
+                                                {{format_number(precio.pieza_precio)}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    {% else %}
+                                    <div class="col-md-6">
+                                        <label for="">{{pieza.piezas.name}}</label>
+                                        <input type="hidden" name="pieza_id{{index+1}}" value={{pieza.piezas.id}}>
+                                        <select class="form-control form-control-lg" name="id_pieza_precio{{index+1}}">
+                                            <option value="" disabled selected>Selecione un precio</option>
+                                            {% for precio in pieza.piezas.pieza_precios %}
+                                            <option value={{precio.id}}>{{format_number(precio.pieza_precio)}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    {%endif%}
+                                    {% endfor %}
+                                    <div class="col-md-12 text-center pt-3">
+                                        <button type="submit" class="btn btn-success">Enviar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12" id="form3" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    Asinar empleado y el tipo de trabajo
+                                </h5>
+                            </div>
+
+                            <form
+                                action="{{ url_for('pintura-detalle.asignacion_detalle',servicio_id=servicio.id,vehiculo_id=vehiculo.id) }}"
+                                method="post">
+                                {% include 'includes/Form/asignar-empleados.html' %}
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-8" id="form4" style="display: none;">
+                        {% include 'includes/Form/consumir-producto.html' %}
+                    </div>
+
+                    {% if serviciopiezas %}
+                    {% include 'includes/table-pieza-asignacion-empleado.html' %}
+                    {% endif %}
+                </div>
+                <!-- [ Main Content ] end -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    mobiscroll.setOptions({
+        locale: mobiscroll.localeEs, // Specify language like: locale: mobiscroll.localePl or omit setting to use default
+        theme: "ios", // Specify theme like: theme: 'ios' or omit setting to use default
+        themeVariant: "light", // More info about themeVariant: https://docs.mobiscroll.com/5-19-2/javascript/select#opt-themeVariant
+    });
+
+    mobiscroll.select("#demo-multiple-select", {
+        inputElement: document.getElementById("demo-multiple-select-input"), // More info about inputElement: https://docs.mobiscroll.com/5-19-2/javascript/select#opt-inputElement
+    });
+</script>
+
+<script>
+    // Ignore this in your implementation
+    window.isMbscDemo = true;
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#car_trabajo").selectpicker();
+
+        $("#car_precio").selectpicker();
+
+        function load_data(type, trabajo_id) {
+            $.ajax({
+                url: "/asignacion/trabajoprecio",
+                method: "POST",
+                data: { type: type, trabajo_id: trabajo_id },
+                dataType: "json",
+                success: function (data) {
+                    //alert(trabajo_id);
+                    var html = "";
+                    for (var count = 0; count < data.length; count++) {
+                        html +=
+                            '<option value="' +
+                            data[count].id +
+                            '">' +
+                            data[count].precio +
+                            "</option>";
+                    }
+                    if (type == "carData") {
+                        $("#car_trabajo").html(html);
+                        $("#car_trabajo").selectpicker("refresh");
+                    } else {
+                        $("#car_precio").html(html);
+                        $("#car_precio").selectpicker("refresh");
+                    }
+                },
+            });
+        }
+
+        $(document).on("change", "#car_trabajo", function () {
+            var trabajo_id = $("#car_trabajo").val();
+            load_data("carModeldata", trabajo_id);
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#producto").selectpicker();
+
+        $("#cantidad").selectpicker();
+
+        function load_data(type, marca_id) {
+            $.ajax({
+                url: "/productos/carbrand",
+                method: "POST",
+                data: { type: type, marca_id: marca_id },
+                dataType: "json",
+
+                success: function (data) {
+                    var html = "";
+                    for (var count = 0; count < data.length; count++) {
+                        html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+                    }
+                    if (type == "carData") {
+                        $("#producto").html(html);
+                        $("#producto").selectpicker("refresh");
+                    } else {
+                        $("#cantidad").html(html);
+                        $("#cantidad").selectpicker("refresh");
+                    }
+                }
+
+            },
+            );
+        }
+
+        $(document).on("change", "#producto", function () {
+            var marca_id = $("#producto").val();
+            load_data("carModeldata", marca_id);
+        });
+    });
+</script>
+{% endblock javascripts %}

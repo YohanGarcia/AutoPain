@@ -1,0 +1,44 @@
+   <!-- [ Hover-table ] start -->
+   <div class="col-md-8">
+    <div class="card">
+        <div class="card-header">
+            <h5>Producto consumidos</h5>
+        </div>
+        <div class="card-block table-border-style">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Empleado</th>
+                            <th>Fecha</th>
+                            <th>Producto</th>
+                            <th>Unidad</th>
+                            <th>Valor</th>
+                            <th>Cantidad</th>
+                            <th>Precio de venta</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for venta in ventas %}
+                        <tr>
+                            <td>{{venta.empleados.name}} {{venta.empleados.lastname}}</td>
+                            <td>{{current_date_format(venta.created)}}</td>
+                            <td>{{venta.productos.name}} {{venta.productos.descrition}}</td>
+                            <td>{{venta.productos.unidades.typo}} {{venta.cantidad_unidades.name}}</td>
+                            <td>{{format_number(venta.productos.precio)}}</td>
+                            <td>{{venta.cantidad}}</td>
+                            <td>{{format_number(venta.precio)}}</td>
+                            <td>
+                                {{format_number(venta.cantidad * (venta.cantidad_unidades.unidad * venta.precio))}}
+                            </td>
+                            
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ Hover-table ] end -->

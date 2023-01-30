@@ -1,112 +1,137 @@
-{% extends "layouts/base.html" %}
-
-{% block title %} UI Forms {% endblock %}
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
-
-{% block content %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/mobiscroll.javascript.min.css') }}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" />
+{% endblock stylesheets %} {% block content %}
 
 <div class="pcoded-content">
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
                 <!-- [ Main Content ] start -->
-                <div class="row ">
-                    <div class="col-sm-4">
-                        <div class="card card-event">
-                            <div class="card-block">
-                                <div class="row align-items-center justify-content-center">
-                                    <div class="col">
-                                        <h5 class="m-0">{{ vehiculo.clientes.username}} {{ vehiculo.clientes.lastname }}
-                                        </h5>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fab fa-angellist text-c-purple f-40 "></i>
-                                        <label class="label f-14 f-w-400 float-right">{{ vehiculo.clientes.status
-                                            }}</label>
-                                    </div>
-                                </div>
-                                <h6 class="text-muted mt-4 mb-0">Se registro el {{ vehiculo.clientes.created }} </h6>
-                                <h2 class="mt-3 f-w-100">{{vehiculo.clientes.vehiculos|length}}<sub
-                                        class="text-muted f-14">Vehiculo Registrados</sub>
-                                </h2>
-                            </div>
-                        </div>
+                <div class="row">
+                    {% include 'includes/datos-servicio-card.html' %}
+                    {% include 'includes/producto-consumido.html' %}
+                    {% include 'includes/table-ganacia-empleado-asignacion.html' %}
+
+                    <div class="col-md-12 mx-md-auto">
+                        <!-- Botón 1 -->
+                        <button id="button1" class="btn btn-secondary" onclick="showForm1()">Agregar Piezas</button>
+
+                        <!-- Botón 2 -->
+                        <button id="button2" class="btn btn-secondary" onclick="showForm2()">Asignar Empleados</button>
+                        <!-- Botón 4 -->
+                        <button id="button4" class="btn btn-secondary" onclick="showForm4()">Consumir Productos</button>
                     </div>
-                    <div class="col-md-8">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Coche: {{ vehiculo.marcas }} {{ vehiculo.modelos }}</li>
-                            <li class="list-group-item">Año: {{vehiculo.age}}</li>
-                            <li class="list-group-item">Placa: {{vehiculo.placa}}</li>
-                            <li class="list-group-item">Color: {{vehiculo.color}}</li>
-                            <li class="list-group-item">Fecha: {{vehiculo.created}}</li>
-                        </ul>
-                    </div>
-                    <!--[ Recent Users ] start-->
-                    <div class="col-xl-8 col-md-6">
-                        <div class="card Recent-Users">
+
+                    <div class="col-md-12" id="form1" style="display: none;">
+                        <div class="card">
                             <div class="card-header">
-                                <div class="input-group mb-3">
-                                    <div>
-                                        <h5>{{ servicios.listas }}</h5>
-                                    </div>
-                                    {% if pinturagenerals %}
-
-                                    {% else %}
-                                    <form action="" method="post">
-                                        <div class="row justify-content-end">
-                                            <div class="col-md-6">
-                                                <input type="number" name="precio" class="form-control"
-                                                    placeholder="Precio en General" autofocus>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <button class="btn btn-primary" type="submit">Button</button>
-
-                                            </div>
-                                        </div>
-                                    </form>
-                                    {% endif %}
-                                </div>
+                                <h5 class="mb-0">
+                                    Selecione las piezas a pintar
+                                </h5>
                             </div>
-                            <!--[ Recent Users ] start-->
-                            <div class="col-xl-8 col-md-6">
-                                <div class="card Recent-Users">
-                                    <div class="card-header">
-                                        <h5>Lista de piesa para pintar del {{vehiculo.marcas}} {{vehiculo.modelos}}</h5>
-
-                                    </div>
-                                    <div class="card-block px-0 py-3">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover">
-                                                <tbody>
-                                                    {% if pinturageneralpiesas %}
-                                                    {% for p in pinturageneralpiesas %}
-                                                    <tr class="unread">
-
-                                                        <td>
-                                                            <h6 class="mb-1">{{p.piesas.name}}</h6>
-                                                        </td>
-                                                        <td>
-                                                            <a href="#!" class="label theme-bg text-white f-12">
-                                                                Asignar empleado a esta piesa
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                    {% else %}
-                                                    <input type="submit" value="Mostrar todoas las piesa">
-                                                    {% endif %}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                            <form
+                                action="{{ url_for('servicio.servicio_pieza_create',servicio_id=servicio.id,vehiculo_id=vehiculo.id) }}"
+                                method="post">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <select id="piezas" name="mymultiselect" data-live-search="true"
+                                            class="selectpicker form-control form-control-lg" multiple>
+                                            <option disabled selected>Seleccionar piezas:</option>
+                                            {% for pieza in piezas %}
+                                            <option value="{{ pieza.id }}">{{pieza.name}}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
-                            <!--[ Recent Users ] end-->
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary ml-4 mb-3">Submit</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <!--[ Recent Users ] end-->
+
+                    <div class="col-md-12" id="form2" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    Asignacion de Empleados
+                                </h5>
+                            </div>
+                            <form
+                                action="{{ url_for('asignacion.asignacion2',servicio_id=servicio.id,vehiculo_id=vehiculo.id) }}"
+                                method="post">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select id="piezas" name="mymultiselect" data-live-search="true"
+                                                class="selectpicker form-control form-control-lg" multiple>
+                                                <option disabled selected>Seleccionar piezas:</option>
+                                                {% for pieza in serviciopiezas %}
+                                                <option value="{{ pieza.id }}">{{pieza.piezas.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select class=" form-control form-control-lg" name="empleado" id="empleado">
+                                                <option>Selecione un empleado</option>
+                                                {% for empleado in empleados %}
+                                                <option value="{{empleado.id}}">
+                                                    {{empleado.name}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select name="car_trabajo" data-live-search="true" id="car_trabajo"
+                                                class="form-control">
+                                                <option>Selecione un tipo de trabajo</option>
+
+                                                {% for trabajo in trabajos %}
+                                                <option value="{{trabajo.id}}">
+                                                    {{trabajo.name}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select class="form-control" name="car_precio" id="car_precio"
+                                                title="Precio">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="mb-3">
+                                            <button type="submit" class="btn btn-primary">
+                                                Enviar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8" id="form4" style="display: block;">
+                        {% include 'includes/Form/consumir-producto.html' %}
+                    </div>
+
+                    {% if serviciopiezas %}
+                    {% include 'includes/table-pieza-asignacion-empleado.html' %}
+    
+                    {% endif %}
                 </div>
                 <!-- [ Main Content ] end -->
             </div>
@@ -117,4 +142,112 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script>
+    mobiscroll.setOptions({
+        locale: mobiscroll.localeEs, // Specify language like: locale: mobiscroll.localePl or omit setting to use default
+        theme: "ios", // Specify theme like: theme: 'ios' or omit setting to use default
+        themeVariant: "light", // More info about themeVariant: https://docs.mobiscroll.com/5-19-2/javascript/select#opt-themeVariant
+    });
+
+    mobiscroll.select("#demo-multiple-select", {
+        inputElement: document.getElementById("demo-multiple-select-input"), // More info about inputElement: https://docs.mobiscroll.com/5-19-2/javascript/select#opt-inputElement
+    });
+</script>
+
+<script>
+    // Ignore this in your implementation
+    window.isMbscDemo = true;
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#car_trabajo").selectpicker();
+
+        $("#car_precio").selectpicker();
+
+        function load_data(type, trabajo_id) {
+            $.ajax({
+                url: "/asignacion/trabajoprecio",
+                method: "POST",
+                data: { type: type, trabajo_id: trabajo_id },
+                dataType: "json",
+                success: function (data) {
+                    //alert(trabajo_id);
+                    var html = "";
+                    for (var count = 0; count < data.length; count++) {
+                        html +=
+                            '<option value="' +
+                            data[count].id +
+                            '">' +
+                            data[count].precio +
+                            "</option>";
+                    }
+                    if (type == "carData") {
+                        $("#car_trabajo").html(html);
+                        $("#car_trabajo").selectpicker("refresh");
+                    } else {
+                        $("#car_precio").html(html);
+                        $("#car_precio").selectpicker("refresh");
+                    }
+                },
+            });
+        }
+
+        $(document).on("change", "#car_trabajo", function () {
+            var trabajo_id = $("#car_trabajo").val();
+            load_data("carModeldata", trabajo_id);
+        });
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#producto").selectpicker();
+
+        $("#cantidad").selectpicker();
+
+        function load_data(type, marca_id) {
+            $.ajax({
+                url: "/productos/carbrand",
+                method: "POST",
+                data: { type: type, marca_id: marca_id },
+                dataType: "json",
+
+                success: function (data) {
+                    var html = "";
+                    for (var count = 0; count < data.length; count++) {
+                        html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+                    }
+                    if (type == "carData") {
+                        $("#producto").html(html);
+                        $("#producto").selectpicker("refresh");
+                    } else {
+                        $("#cantidad").html(html);
+                        $("#cantidad").selectpicker("refresh");
+                    }
+                }
+
+            },
+            );
+        }
+
+        $(document).on("change", "#producto", function () {
+            var marca_id = $("#producto").val();
+            load_data("carModeldata", marca_id);
+        });
+    });
+</script>
+{% endblock javascripts %}

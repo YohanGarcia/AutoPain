@@ -1,12 +1,10 @@
-from tkinter.tix import Select
-from flask_wtf import FlaskForm, Form
+from flask_wtf import FlaskForm
 
 from wtforms.fields import StringField, SelectField
 from wtforms.validators import DataRequired
 
-from wtforms_sqlalchemy.fields import QuerySelectField
 
-from src.models.Coche import Marca, Modelo
+from src.models.Coche import Marca
 
 def get_marca():
     return Marca.query.all()

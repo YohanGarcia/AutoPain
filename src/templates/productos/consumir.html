@@ -1,0 +1,236 @@
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" />
+{% endblock stylesheets %}
+
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Consumir Productos</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="mb-0 text-muted">
+                                            {% if msg %}
+                                            <span class="text-danger">{{ msg | safe }}</span>
+
+                                            {% endif %}
+                                        </span>
+                                        <form role="form" method="post" action="/productos/consumir">
+                                            <div class="row">
+                                                <div class="col-md-4 form-group">
+                                                    <input type="hidden" name="ruta" value="{{ruta}}">
+                                                    <label>Seleciona el vehiculo</label>
+                                                    <select class="form-control" name="id_vehiculos"
+                                                        data-live-search="true" id="id_vehiculos">
+                                                        <option value="none" selected disabled hidden>Vehiculo</option>
+
+                                                        {% for vehiculo in vehiculos %}
+                                                        <option value={{vehiculo.id}}>{{vehiculo.marcas}}
+                                                            {{vehiculo.modelos}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label>Seleciona el servicio</label>
+                                                    <select class="form-control" data-live-search="true"
+                                                        name="id_servicios" id="id_servicios">
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label>Seleciona el Elmpleado</label>
+                                                    <select class="form-control" data-live-search="true"
+                                                        name="id_empleados">
+                                                        <option value="none" selected disabled hidden>Empleados</option>
+                                                        {% for empleado in empleados %}
+                                                        <option value={{empleado.id}}>{{empleado.name}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label>Producto</label>
+                                                    <select class="form-control" name="producto" data-live-search="true"
+                                                        id="producto">
+                                                        <option value="none" selected disabled hidden>Productos</option>
+
+                                                        {% for producto in productos %}
+                                                        <option value={{producto.id}}>{{producto.name}}
+                                                            {{producto.descrition}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label>Unidad</label>
+                                                    <select class="form-control" data-live-search="true" name="cantidad"
+                                                        id="cantidad">
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label>Cantidad</label>
+                                                    <input type="number" name="cantidades" placeholder="Cantidad"
+                                                        class="form-control">
+                                                </div>
+                                                <div class="col-md-4 form-group">
+                                                    <label>Precio de venta</label>
+                                                    <input type="number" name="precio_venta" placeholder="Precio de venta"
+                                                        class="form-control">
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <button type="submit" class="btn btn-primary">
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Hover-table ] start -->
+                    <div class="col-xl-12 pt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Hover Table</h5>
+                                <span class="d-block m-t-5">use class <code>table-hover</code> inside table
+                                    element</span>
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Producto</th>
+                                                <th>Valor</th>
+                                                <th>Cantidad</th>
+                                                <th>Precio de venta</th>
+                                                <th>Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for venta in ventas %}
+                                            <tr>
+                                                <td>{{venta.productos.name}} {{venta.productos.descrition}}</td>
+                                                <td>{{format_number(venta.productos.precio)}}</td>
+                                                <td>{{venta.cantidad}}</td>
+                                                <td>{{format_number(venta.precio)}}</td>
+                                                <td>
+                                                    {{format_number(venta.cantidad * (venta.cantidad_unidades.unidad * venta.precio))}}
+                                                </td>
+                                                
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Hover-table ] end -->
+                </div>
+                <!-- [ collapse ] end -->
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#id_vehiculos").selectpicker();
+
+        $("#id_servicios").selectpicker();
+
+        function load_data(type, marca_id) {
+            $.ajax({
+                url: "/productos/ventas/servicios",
+                method: "POST",
+                data: { type: type, marca_id: marca_id },
+                dataType: "json",
+
+                success: function (data) {
+                    var html = "";
+                    for (var count = 0; count < data.length; count++) {
+                        html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+                    }
+                    if (type == "carData") {
+                        $("#id_vehiculos").html(html);
+                        $("#id_vehiculos").selectpicker("refresh");
+                    } else {
+                        $("#id_servicios").html(html);
+                        $("#id_servicios").selectpicker("refresh");
+                    }
+                }
+
+            },
+            );
+        }
+
+        $(document).on("change", "#id_vehiculos", function () {
+            var marca_id = $("#id_vehiculos").val();
+            load_data("carModeldata", marca_id);
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#producto").selectpicker();
+
+        $("#cantidad").selectpicker();
+
+        function load_data(type, marca_id) {
+            $.ajax({
+                url: "/productos/carbrand",
+                method: "POST",
+                data: { type: type, marca_id: marca_id },
+                dataType: "json",
+
+                success: function (data) {
+                    var html = "";
+                    for (var count = 0; count < data.length; count++) {
+                        html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+                    }
+                    if (type == "carData") {
+                        $("#producto").html(html);
+                        $("#producto").selectpicker("refresh");
+                    } else {
+                        $("#cantidad").html(html);
+                        $("#cantidad").selectpicker("refresh");
+                    }
+                }
+
+            },
+            );
+        }
+
+        $(document).on("change", "#producto", function () {
+            var marca_id = $("#producto").val();
+            load_data("carModeldata", marca_id);
+        });
+    });
+</script>
+{% endblock javascripts %}

@@ -1,132 +1,320 @@
-{% extends "layouts/base.html" %}
-
-{% block title %} UI Forms {% endblock %}
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
 
+{% endblock stylesheets %}
 {% block content %}
 
 <div class="pcoded-content">
-    <div class="pcoded-inner-content">
-        <div class="main-body">
-            <div class="page-wrapper">
-                <!-- [ Main Content ] start -->
-                <div class="row ">
-                    <div class="col-sm-4">
-                        <div class="card card-event">
-
-                            <div class="card-block">
-                                <div class="row align-items-center justify-content-center">
-                                    <div class="col">
-                                        <h5 class="m-0">{{ query.clientes.username}} {{ query.clientes.lastname }}</h5>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fab fa-angellist text-c-purple f-40 "></i>
-                                        <label class="label f-14 f-w-400 float-right">{{ query.clientes.status
-                                            }}</label>
-                                    </div>
-                                </div>
-                                <h6 class="text-muted mt-4 mb-0">Se registro el {{ query.clientes.created }} </h6>
-                                <h2 class="mt-3 f-w-100">{{query.clientes.vehiculos|length}}<sub
-                                        class="text-muted f-14">Vehiculo Registrados</sub></h2>
-
-
-                            </div>
-                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#exampleModal" data-whatever="@mdo">Agregar nuevo Servicio</button>
-
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Coche: {{ query.marcas }} {{ query.modelos }}</li>
-                            <li class="list-group-item">Año: {{query.age}}</li>
-                            <li class="list-group-item">Placa: {{query.placa}}</li>
-                            <li class="list-group-item">Color: {{query.color}}</li>
-                            <li class="list-group-item">Fecha: {{query.created}}</li>
-                        </ul>
-
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Nuevo Servisio</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="" method="post">
-                                            <div class="form-group">
-                                                <label>Nombre del Servicio</label>
-                                                <select name="name" id="" class="form-control">
-                                                    <option value="">Lista de srvicio</option>
-                                                    {% for list in listas %}
-                                                    <option value={{list.id}}>{{list.name}}</option>
-                                                    {% endfor %}
-                                                </select>
-                                            </div>
-
-                                            <button type="submit" class="btn btn-primary">Agregar</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--[ Recent Users ] start-->
-                    <div class="col-xl-8 col-md-6">
-                        <div class="card Recent-Users">
-                            <div class="card-header">
-                                <h5>Lista de Servicios asignado a el vehiculo {{query.marcas}} {{query.modelos}}</h5>
-                            </div>
-                            <div class="card-block px-0 py-3">
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <tbody>
-                                            {% for servicio in query.servicios %}
-                                            <tr class="unread">
-
-                                                <td>
-                                                    <h6 class="mb-1">{{servicio.listas}}</h6>
-                                                </td>
-                                                <td>
-                                                    <h6 class="text-muted"><i
-                                                            class="fas fa-circle text-c-green f-10 m-r-15"></i>{{servicio.created}}
-                                                    </h6>
-                                                </td>
-                                                <td>
-                                                    {% if servicio.listas.id %}
-                                                        <a href="{{ url_for('servicio.main',vehiculo_id=query.id, servicio_id=servicio.id) }}"
-                                                            class="label theme-bg2 text-white f-14">
-                                                            Complerar Servicio
-                                                        </a>
-                                                        {% else %}
-                                                        <a href="#!" class="label theme-bg text-white f-12">
-                                                            Approve
-                                                        </a>
-                                                    {% endif %}
-                                                </td>
-                                            </tr>
-                                            {% endfor %}
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--[ Recent Users ] end-->
+  <div class="pcoded-inner-content">
+    <div class="main-body">
+      <div class="page-wrapper">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="card card-event">
+              <div class="card-block">
+                <div class="row align-items-center justify-content-center">
+                  <div class="col">
+                    <h5 class="m-0">
+                      {{ vehiculo.clientes.username}} {{
+                      vehiculo.clientes.lastname }}
+                    </h5>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fab fa-angellist text-c-purple f-40"></i>
+                    <label class="label f-14 f-w-400 float-right">{{ vehiculo.clientes.status }}</label>
+                  </div>
                 </div>
-                <!-- [ Main Content ] end -->
+                <h6 class="text-muted mt-4 mb-0">
+                  {{ current_date_format(vehiculo.clientes.created)}}
+                </h6>
+                <h2 class="mt-3 f-w-100">
+                  {{vehiculo.clientes.vehiculos|length}}<sub class="text-muted f-14">Vehiculo Registrados</sub>
+                </h2>
+              </div>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal1"
+                data-whatever="@mdo">
+                Agregar nuevo Servicio
+              </button>
             </div>
+          </div>
+          <div class="col-md-8">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                Coche: {{ vehiculo.marcas }} {{ vehiculo.modelos }}
+              </li>
+              <li class="list-group-item">Año: {{vehiculo.age}}</li>
+              <li class="list-group-item">Placa: {{vehiculo.placa}}</li>
+              <li class="list-group-item">Color: {{vehiculo.color}}</li>
+              <li class="list-group-item">Fecha: {{ current_date_format(vehiculo.created) }}</li>
+            </ul>
+
+            <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="Label"
+              aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="Label">Nuevo Servisio</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="/servicio/create/{{vehiculo.id}}" method="post">
+                      <div class="form-group">
+                        <select name="name" id="" class="form-control">
+                          <option value="">Lista de srvicio</option>
+                          {% for lista in serviciolista %}
+                          <option value="{{lista.id}}">{{lista.name}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-md-12 text-center pt-3">
+                        <button type="submit" class="btn btn-primary">
+                          Agregar
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--[ Recent Users ] start-->
+          <div class="col">
+            <div class="card Recent-Users">
+              <div class="card-header">
+                <h5>
+                  Lista de Servicios asignado a el vehiculo {{vehiculo.marcas}}
+                  {{vehiculo.modelos}}
+                </h5>
+              </div>
+              <div class="card-block px-0 py-3">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <tbody>
+                      {% for servicio in servicios %}
+                      <tr class="unread">
+                        <td>
+                          <h6 class="mb-1">
+                            Servicio: {{servicio.serviciolistas.name}}
+                          </h6>
+                        </td>
+                        <td>
+                          <h6 class="text-muted">
+                            {% if servicio.status %}
+                            <i class="fas fa-circle text-c-green f-10 m-r-15"></i>
+                            {% else %}
+                            <i class="fas fa-circle text-c-red f-10 m-r-15"></i>
+                            {% endif %}
+                            Fecha: {{
+                            current_date_format(servicio.created) }}
+                          </h6>
+                        </td>
+                        {% if servicio.servicioprecios == [] and servicio.serviciolistas.name == 'Pintura en general'%}
+                        <td>
+                          <form
+                            action="{{ url_for('servicio.servicio_precio', servicio_id=servicio.id, vehiculo_id=vehiculo.id) }}"
+                            method="post">
+                            <div class="form-control">
+                              Precio:
+                              <input type="number" name="precio" id="" />
+                              <button type="submit" class="btn btn-primary">
+                                Agregar
+                              </button>
+                            </div>
+                          </form>
+                        </td>
+                        {% elif servicio.serviciolistas.name == 'Pintura al detalle'%}
+                        <td>
+                          <div>
+                            <h6 class="text-muted">
+                              {% set counter = [0] %}
+                              {% for precio in servicio.serviciopiezas %}
+                              {% if precio.pieza_precio_id != none %}
+                              {% if counter.append(counter.pop() + precio.pieza_precios.pieza_precio) -%}{%endif%}
+                              {%endif%}
+                              {% endfor %}
+                              Precio: {{format_number(counter[-1]) }}
+                              <a href="/pintura/detalle/servicio/{{servicio.id}}/vehiculo/{{vehiculo.id}}"
+                                class="label theme-bg text-white ml-5">
+                                ver servicio
+                              </a>
+                            </h6>
+                          </div>
+                        </td>
+                        {% elif servicio.servicioprecios == [] and servicio.serviciolistas.name == 'Brillado completo' %}
+                        <td>
+                          <form
+                            action="{{ url_for('servicio.servicio_precio', servicio_id=servicio.id, vehiculo_id=vehiculo.id) }}"
+                            method="post">
+                            <div class="form-control">
+                              Precio:
+                              <input type="number" name="precio" id="" />
+                              <button type="submit" class="btn btn-primary">
+                                Agregar
+                              </button>
+                            </div>
+                          </form>
+                        </td>
+                        {% endif %}
+                        {% for servicioprecio in servicio.servicioprecios%}
+                        <td>
+                          <h6 class="text-muted">
+                            Precio: {{format_number(servicioprecio.precio) }}
+                            {% if servicio.serviciolistas.name == 'Brillado completo' %}
+                            <a href="/brillado/completo/servicio/{{servicio.id}}/vehiculo/{{vehiculo.id}}"
+                              class="label theme-bg text-white ml-5">
+                              ver servicio
+                            </a>
+                            {%endif%}
+
+                            {% if servicio.serviciolistas.name == 'Pintura en general'%}
+                            <a href="/pintura/general/servicios/{{servicio.id}}/vehiculo/{{vehiculo.id}}"
+                              class="label theme-bg text-white ml-5">
+                              ver servicio
+                            </a>
+                            {%endif%}
+
+                          </h6> 
+                        </td>
+                        {% endfor %}
+                        <td>
+                          <a href="#" type="button" class="label theme-bg text-white" data-toggle="modal"
+                            data-target="#{{servicio.id}}" data-whatever="@mdo">
+                            Agregar Bono
+                          </a>
+                          <div class="modal fade" id="{{servicio.id}}" tabindex="-1" role="dialog"
+                            aria-labelledby="agregarbono{{servicio.id}}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="agregarbono{{servicio.id}}">
+                                    {{servicio.serviciolistas.name}}
+                                  </h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <form action="{{ url_for('vehiculo.servicio_pago', vehiculo_id=vehiculo.id) }}"
+                                    method="post">
+                                    <div class="form-control">
+                                      <input type="number" name="cliente" value="{{vehiculo.clientes.id}}" hidden>
+                                      <input type="number" name="servicio" value="{{servicio.id}}" hidden>
+                                      Bono$:
+                                      <input type="number" class="form-control" name="bono" id="" />
+                                      Depcricion:
+                                      <input type="text" name="descricion" class="form-control" />
+                                      <button type="submit" class="btn btn-primary">
+                                        Enviar
+                                      </button>
+                                    </div>
+                                  </form>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </td>
+                        {% if servicio.serviciopagos %}
+                        <td>
+                          <a href="#" type="button" class="label theme-bg text-white" data-toggle="modal"
+                            data-target="#pagos{{servicio.id}}" data-whatever="@mdo">
+                            Ver Bonos
+                          </a>
+                          <div class="modal fade" id="pagos{{servicio.id}}" tabindex="-1" role="dialog"
+                            aria-labelledby="pagos{{servicio.id}}" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="pagos{{servicio.id}}">
+                                    {{servicio.serviciolistas.name}}
+                                  </h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <ul class="list-group list-group-flush">
+                                    {% set points = [0] -%}
+                                    {% for pagos in servicio.serviciopagos -%}
+                                    <li class="list-group-item">${{format_number(pagos.monto)}} <br>
+                                      {{pagos.descripcion}} </li>
+                                    {% if points.append(points.pop()+ pagos.monto) -%}{% endif %}
+                                    {% endfor %}
+                                    <li class="list-group-item active">Total: ${{points[-1]}}</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        {% endif %}
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--[ Recent Users ] end-->
         </div>
+        <!-- [ Main Content ] end -->
+      </div>
     </div>
+  </div>
 </div>
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    $("#id_pieza").selectpicker();
+
+    $("#id_precio").selectpicker();
+
+    function load_data(type, marca_id) {
+      $.ajax({
+        url: "/pintura/general/pieza/precio",
+        method: "POST",
+        data: { type: type, marca_id: marca_id },
+        dataType: "json",
+
+        success: function (data) {
+          var html = "";
+          for (var count = 0; count < data.length; count++) {
+            html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+          }
+          if (type == "carData") {
+            $("#id_pieza").html(html);
+            $("#id_pieza").selectpicker("refresh");
+          } else {
+            $("#id_precio").html(html);
+            $("#id_precio").selectpicker("refresh");
+          }
+        }
+
+      },
+      );
+    }
+
+    $(document).on("change", "#id_pieza", function () {
+      var marca_id = $("#id_pieza").val();
+      load_data("carModeldata", marca_id);
+    });
+  });
+</script>
+
+{% endblock javascripts %}

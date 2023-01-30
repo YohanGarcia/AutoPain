@@ -1,0 +1,394 @@
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ url_for('static', filename='/css/mobiscroll.javascript.min.css') }}" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" />
+{% endblock stylesheets %} {% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+                    {% include 'includes/datos-servicio-card.html' %}
+                    {% include 'includes/producto-consumido.html' %}
+                    {% include 'includes/table-ganacia-empleado-asignacion.html' %}
+
+                    {% if asignaciones == [] %}
+                    <div class="col-md-12 mt-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    asignacion de empleados
+                                </h5>
+                            </div>
+                            <form
+                                action="{{ url_for('asignacion.asignacion_brillado_general',servicio_id=servicio.id,vehiculo_id=vehiculo.id) }}"
+                                method="post">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group ">
+                                            <select class="form-control form-control-lg" name="id_pieza"
+                                                data-live-search="true" id="empleado">
+                                                <option value="{{piezas.id}}">
+                                                    {{piezas.name}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 ">
+                                        <div class="form-group ">
+                                            <select class="form-control form-control-lg" name="empleado"
+                                                data-live-search="true" id="empleado">
+                                                <option>Selecione un empleado</option>
+                                                {% for empleado in empleados %}
+                                                <option value="{{empleado.id}}">
+                                                    {{empleado.name}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group ">
+                                            <select name="car_trabajo" data-live-search="true" id="car_trabajo"
+                                                class="form-control">
+                                                <option>Selecione un tipo de trabajo</option>
+
+                                                {% for trabajo in trabajos %}
+                                                <option value="{{trabajo.id}}">
+                                                    {{trabajo.name}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group ">
+                                            <select class="form-control" name="car_precio" id="car_precio"
+                                                title="Precio"></select>
+                                        </div>
+                                    </div>
+                                    <div class="col-mb-6 mx-xl-auto mt-4 mb-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            Enviar
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="card">
+                        <div class="card-header">
+                            <h5>Consumir Productos</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="mb-0 text-muted">
+                                        {% if msg %}
+                                        <span class="text-danger">{{ msg | safe }}</span>
+
+                                        {% endif %}
+                                    </span>
+                                    <form role="form" method="post" action="/productos/consumir">
+                                        <div class="row">
+                                            <input type="hidden" name="id_vehiculos" value="{{vehiculo.id}}">
+                                            <input type="hidden" name="id_servicios" value="{{servicio.id}}">
+                                            <input type="hidden" name="ruta" value="{{ruta}}">
+
+                                            <div class="col-md-6 form-group">
+                                                <label>Seleciona el Elmpleado</label>
+                                                <select class="form-control form-control-lg" data-live-search="true"
+                                                    name="id_empleados">
+                                                    <option value="none" selected disabled hidden>Empleados</option>
+                                                    {% for empleado in empleados %}
+                                                    <option value={{empleado.id}}>{{empleado.name}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Producto</label>
+                                                <select class="form-control" name="producto" data-live-search="true"
+                                                    id="producto">
+                                                    <option value="none" selected disabled hidden>Productos</option>
+
+                                                    {% for producto in productos %}
+                                                    <option value={{producto.id}}>{{producto.name}}
+                                                        {{producto.descrition}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Unidad</label>
+                                                <select class="form-control" data-live-search="true" name="cantidad"
+                                                    id="cantidad">
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Cantidad</label>
+                                                <input type="text" name="cantidades" placeholder="Cantidad"
+                                                    class="form-control">
+                                            </div>
+                                            <div class="col-md-6 form-group">
+                                                <label>Precio de venta</label>
+                                                <input type="number" name="precio_venta" placeholder="Precio de venta"
+                                                    class="form-control">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <button type="submit" class="btn btn-primary">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {% if serviciopiezas %}
+                <div class="col-md-12">
+                    <div class="accordion">
+                        {% for pieza in serviciopiezas %}
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    {{pieza.piezas.name}}
+                                    <form action="/asignacion/delete/pieza/{{pieza.id}}" method="post">
+                                        <input type="hidden" name="ruta" value={{ruta}}>
+                
+                                        <button type="submit" class="btn btn-danger text-white" >
+                                            Eliminar
+                                        </button>
+                                    </form>
+                                </h5>
+                            </div>
+                            <!-- [ stiped-table ] start -->
+                            <div class="card-block ">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr class="unread">
+                                                <th>Empleados</th>
+                                                <th>Trabajos</th>
+                                                <th>Precios</th>
+                                                <th>Editar</th>
+                                                <th>Eliminar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for item in asignaciones %}
+                                            <tr class="unread">
+
+                                                <td>
+                                                    {{ item.empleados.name }}
+                                                </td>
+                                                <td>
+                                                    {{ item.trabajos.name }}
+                                                </td>
+                                                <td>
+                                                    {{format_number(item.trabajoprecios.precio)}}
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-warning text-white" type="button" id="btn-edit{{item.id}}"
+                                                        data-toggle="modal" data-target="#modal{{item.id}}">Acutalizar
+                                                    </button>
+                
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="modal{{item.id}}" tabindex="-1" role="dialog"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel">
+                                                                        {{ item.empleados.name }}
+                                                                    </h5>
+                                                                    <button type="button" class="close" data-dismiss="modal"
+                                                                        aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="/asignacion/update/asignacion/{{item.id}}"
+                                                                        method="post">
+                                                                        <div class="row">
+                                                                            <div class="col-md-6 ">
+                                                                                <div class="form-group ">
+                                                                                    <input type="hidden" name="ruta" value={{ruta}}>
+                                                                                    <select class="form-control form-control-lg"
+                                                                                        name="empleado" data-live-search="true"
+                                                                                        id="empleado">
+                                                                                        <option value="">Selecione un empleado</option>
+                                                                                        {% for empleado in empleados%}
+                                                                                        <option value="{{empleado.id}}">
+                                                                                            {{empleado.name}}
+                                                                                        </option>
+                                                                                        {% endfor %}
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group ">
+                                                                                    <select class="form-control form-control-lg"
+                                                                                        name="car_precio" title="Precio">
+                                                                                        <option value="">Selecione un nuevo precio
+                                                                                        </option>
+                                                                                        {% for precio in item.trabajos.trabajoprecios %}
+                                                                                        <option value="{{precio.id}}">{{precio.precio}}
+                                                                                        </option>
+                                                                                        {% endfor %}
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                </div>
+                                                                <div class="modal-footer text-center">
+                                                                    <button type="submit" class="btn btn-primary">Guardar
+                                                                        Cambios
+                                                                    </button>
+                                                                    </form>
+                
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                
+                                                </td>
+                                                <td>
+                                                    <form action="/asignacion/delete/asignacion/{{item.id}}" method="post">
+                                                        <input type="hidden" name="ruta" value={{ruta}}>
+                
+                                                        <button type="submit" class="btn btn-danger text-white" >Eliminar
+                                                        </button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- [ stiped-table ] end -->
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script>
+    mobiscroll.setOptions({
+        locale: mobiscroll.localeEs, // Specify language like: locale: mobiscroll.localePl or omit setting to use default
+        theme: "ios", // Specify theme like: theme: 'ios' or omit setting to use default
+        themeVariant: "light", // More info about themeVariant: https://docs.mobiscroll.com/5-19-2/javascript/select#opt-themeVariant
+    });
+
+    mobiscroll.select("#demo-multiple-select", {
+        inputElement: document.getElementById("demo-multiple-select-input"), // More info about inputElement: https://docs.mobiscroll.com/5-19-2/javascript/select#opt-inputElement
+    });
+</script>
+
+<script>
+    // Ignore this in your implementation
+    window.isMbscDemo = true;
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#car_trabajo").selectpicker();
+
+        $("#car_precio").selectpicker();
+
+        function load_data(type, trabajo_id) {
+            $.ajax({
+                url: "/asignacion/trabajoprecio",
+                method: "POST",
+                data: { type: type, trabajo_id: trabajo_id },
+                dataType: "json",
+                success: function (data) {
+                    //alert(trabajo_id);
+                    var html = "";
+                    for (var count = 0; count < data.length; count++) {
+                        html +=
+                            '<option value="' +
+                            data[count].id +
+                            '">' +
+                            data[count].precio +
+                            "</option>";
+                    }
+                    if (type == "carData") {
+                        $("#car_trabajo").html(html);
+                        $("#car_trabajo").selectpicker("refresh");
+                    } else {
+                        $("#car_precio").html(html);
+                        $("#car_precio").selectpicker("refresh");
+                    }
+                },
+            });
+        }
+
+        $(document).on("change", "#car_trabajo", function () {
+            var trabajo_id = $("#car_trabajo").val();
+            load_data("carModeldata", trabajo_id);
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#producto").selectpicker();
+
+        $("#cantidad").selectpicker();
+
+        function load_data(type, marca_id) {
+            $.ajax({
+                url: "/productos/carbrand",
+                method: "POST",
+                data: { type: type, marca_id: marca_id },
+                dataType: "json",
+
+                success: function (data) {
+                    var html = "";
+                    for (var count = 0; count < data.length; count++) {
+                        html += '<option value="' + data[count].id + '">' + data[count].name + "</option>";
+                    }
+                    if (type == "carData") {
+                        $("#producto").html(html);
+                        $("#producto").selectpicker("refresh");
+                    } else {
+                        $("#cantidad").html(html);
+                        $("#cantidad").selectpicker("refresh");
+                    }
+                }
+
+            },
+            );
+        }
+
+        $(document).on("change", "#producto", function () {
+            var marca_id = $("#producto").val();
+            load_data("carModeldata", marca_id);
+        });
+    });
+</script>
+{% endblock javascripts %}

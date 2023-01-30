@@ -1,0 +1,115 @@
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="pcoded-content">
+  <div class="pcoded-inner-content">
+    <div class="main-body">
+      <div class="page-wrapper">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <h5>Registrar Productos</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <span class="mb-0 text-muted">
+                      {% if msg %}
+                      <span class="text-danger">{{ msg | safe }}</span>
+
+                      {% endif %}
+                    </span>
+                    <form role="form" method="post" action="/productos/registrar/nuevo">
+                      <div class="row">
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="Modelo">Unidad</label>
+                            <select class="form-control" name="unidad">
+                              <option value="">Selet Unidad</option>
+                              {% for item in unidad %}
+                              <option value={{item.id}}>{{item.typo}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="Modelo">Nombre</label>
+                            <input type="text" class="form-control" placeholder="Nombre" name="name">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group text-uppercase">
+                            <label for="Modelo">Descripcion</label>
+                            <input type="text" class="form-control text-uppercase" placeholder="Descripcion" name="descripcion">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="form-group">
+                            <label for="Modelo">Precio</label>
+                            <input type="number" class="form-control" placeholder="Precio" name="precio">
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <button type="submit" class="btn btn-primary">
+                            Submit
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+           <!-- [ Hover-table ] start -->
+           <div class="col-xl-12 pt-4">
+            <div class="card">
+              <div class="card-header">
+                <h5>Hover Table</h5>
+                <span class="d-block m-t-5">use class <code>table-hover</code> inside table element</span>
+              </div>
+              <div class="card-block table-border-style">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Unidad</th>
+                        <th>Producto</th>
+                        <th>Descripcion</th>
+                        <th>Precio</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    {% for producto in productos %}
+                      <tr>
+                        <td>{{producto.unidades.typo}}</td>
+                        <td>{{producto.name}}</td>
+                        <td>{{producto.descrition}}</td>
+                        <td>{{format_number(producto.precio)}}</td>
+                      </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- [ Hover-table ] end -->
+        </div>
+        <!-- [ collapse ] end -->
+      </div>
+      <!-- [ Main Content ] end -->
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}

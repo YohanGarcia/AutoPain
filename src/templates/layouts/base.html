@@ -3,7 +3,7 @@
 
 <head>
     <title>
-        Flask Datta Able - {% block title %}{% endblock %} | AppSeed
+        Auto Pain | {% block title %}{% endblock %}
     </title>
     <!-- HTML5 Shim and Respond.js IE10 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -24,7 +24,7 @@
     <meta name="author" content="CodedThemes" />
 
     <!-- Favicon icon -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='/assets/images/favicon.ico') }}"  type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/assets/images/favicon.ico') }}" type="image/x-icon">
 
     <!-- fontawesome icon -->
     <link rel="stylesheet"
@@ -47,7 +47,9 @@
     <!-- [ Pre-loader ] start -->
     <div class="loader-bg">
         <div class="loader-track">
-            <div class="loader-fill"></div>
+            <div class="loader-fill">
+
+            </div>
         </div>
     </div>
 
@@ -59,6 +61,18 @@
 
     <div class="pcoded-main-container">
         <div class="pcoded-wrapper">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {% for message in messages %}
+            <span class="mb-0 text-muted">
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </span>
+
+            {% endif %}
+            {% endwith %}
 
             {% block content %}{% endblock content %}
 

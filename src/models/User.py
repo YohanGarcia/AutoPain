@@ -1,28 +1,28 @@
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
 
-from src import db
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from src import db
 
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    lastname = db.Column(db.String(80), nullable=False)
-    empresa = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.Text, nullable=False)
+    
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    status = db.Column(db.Boolean, unique=False, default=True)
 
-    servicios = relationship("Servicio", back_populates="users")
-
-    def __init__(self, username, lastname, empresa, email, password) -> None:
+    def __init__(self, username, password, email):
         self.username = username
-        self.lastname = lastname
-        self.empresa = empresa
+        self.password = self.__create_password(password)
         self.email = email
-        self.password = password
- 
-    def __repr__(self):
-        return '<User %r>' % self.username
+
+    def __create_password(self, password):
+        return generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password, password)

@@ -34,33 +34,33 @@
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-header">
-                                <h5>Registro de servicios</h5>
+                                <h5>Registro de Servicios</h5>
                             </div>
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <form role="form" method="post" action="">
-                                            {{ form.hidden_tag() }}
+                                        <form role="form" method="post" action="/servicio/lista/create">
+                                            {% from "_macros.html" import render_field %}
+
 
                                             <div class="form-group">
-                                                <label for="Modelo">Servicio</label>
-                                                {{ form.name(placeholder="Nombre del servicio", class="form-control") }}
-                                            </div>
-                                            
+                                                {{ render_field(form.name, class='form-control')}}
+                                              </div>
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <ul>
-                                {% for list in lista %}
-                                <li>{{list.name}}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
                     </div>
+                <div class="col">
+                    <ul>
+                        {% for lista in serviciolista %}
+                            <li>{{lista.name}}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
                     <!-- [ collapse ] end -->
                 </div>
                 <!-- [ Main Content ] end -->

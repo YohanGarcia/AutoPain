@@ -1,84 +1,92 @@
-import json
-from turtle import color
-from flask import(
-    jsonify, render_template, Blueprint, flash, 
+from flask import (
+    jsonify, render_template, Blueprint, flash,
     redirect, request, session, url_for
 )
-from flask_login import current_user, login_required
-
+from flask_login import login_required
 from src import db
-
-
+from src.heltper.formato import format_number
+from src.models.Servicio import Servicio, Serviciolista,Serviciopago, Serviciopieza
 from src.models.Vehiculo import Vehiculo
-from src.models.Cliente import Cliente
 from src.models.Coche import Marca, Modelo
-from src.models.servicios import Lista, Servicio
+from src.models.Pieza import Pieza
+
 
 from src.forms.vehiculoForm import VehiculoForm
+
+from src.helper import current_date_format
+
 vehiculo = Blueprint('vehiculo', __name__, url_prefix='/vehiculo')
 
-@vehiculo.route('/<int:id>', methods=['GET', 'POST'])
+
+@vehiculo.route('/create/cliente/<int:cliente_id>', methods=['GET', 'POST'])
 @login_required
-def main(id):
-    form = VehiculoForm()
+def vehiculo_create(cliente_id):
+    vehiculo_forms = VehiculoForm()
     marcas = Marca.query.all()
-    msg = ''
 
-    if request.method == 'POST':
+    if request.method == 'POST' and vehiculo_forms.validate_on_submit:
+        marca = int(request.form['car_brand'])
+        modelo = int(request.form['car_models'])
+        placa = vehiculo_forms.placa.data
+        age = vehiculo_forms.age.data
+        color = vehiculo_forms.color.data
+        cliente_id = cliente_id
 
-        if form.validate_on_submit:
-            marca = int(request.form['car_brand'])
-            modelo = int(request.form['car_models'])
-            placa = form.placa.data
-            age = form.age.data
-            color = form.color.data
-            cliente_id = id
-            print([marca,modelo,placa,age,color,cliente_id,current_user.id])
+        nuevo_vehiculo = Vehiculo(
+            marca_id=marca,
+            modelo_id=modelo,
+            cliente_id=cliente_id,
+            placa=placa,
+            age=age,
+            color=color
+        )
+        flash('Vehiculo creado Exictosamente!.')
 
-            coche = Vehiculo.query.filter(
-                    (Vehiculo.marca_id==marca) & (Vehiculo.modelo_id==modelo) &
-                    (Vehiculo.cliente_id==cliente_id) & (Vehiculo.user_id==current_user.id) &
-                    (Vehiculo.placa == placa)
-                    ).first()
-
-            cliente = Cliente.query.filter_by(id=cliente_id).first()
-            
-            nuevo_vehiculo = Vehiculo(
-                marca,
-                modelo,
-                cliente_id,
-                current_user.id,
-                placa,
-                age,
-                color
-            )
-            
-            
-            db.session.add(nuevo_vehiculo)
-            db.session.commit()
-            return redirect(url_for('index.index'))
-
-    return render_template('vehiculo/create.html', marcas=marcas, form=form, msg=msg)
-
-@vehiculo.route('/ver/<int:id>', methods=['GET', 'POST'])
-@login_required
-def get_vehiculo(id):
-    query = Vehiculo.query.filter_by(id=id).first()
-    lista = Lista.query.all()
-    if request.method == "POST":
-        name = request.form.get('name')
-        nuevo_servicio = Servicio(lista_id=int(name), vehiculo_id=id, user_id=current_user.id)
-        db.session.add(nuevo_servicio)
+        db.session.add(nuevo_vehiculo)
         db.session.commit()
-        return redirect(f'/vehiculo/ver/{id}')
-    return render_template('vehiculo/ver.html', query=query, listas=lista)
+        return redirect(url_for('cliente.ver_cliente', cliente_id=cliente_id))
+    return render_template('vehiculo/create.html', marcas=marcas, form=vehiculo_forms, current_date_format=current_date_format)
 
-@vehiculo.route('/carbrand', methods=['GET', 'POST'])
+@vehiculo.route('/ver/<int:vehiculo_id>', methods=['GET', 'POST'])
 @login_required
+def get_vehiculo(vehiculo_id):
+    vehiculo = Vehiculo.query.filter_by(id=vehiculo_id).first()
+    servicio = Servicio.query.filter_by(vehiculo_id=vehiculo.id).all()
+    serviciolista = Serviciolista.query.all() 
+    piezas = Pieza.query.all()
+
+    return render_template(
+            'vehiculo/ver.html', 
+            vehiculo=vehiculo, 
+            servicios=servicio, 
+            serviciolista=serviciolista, 
+            piezas=piezas,
+            cantidad_pieza=0,
+            current_date_format=current_date_format,
+            format_number=format_number,)
+
+@vehiculo.route('/<int:vehiculo_id>/servicio-bono', methods=['POST'])
+@login_required
+def servicio_pago(vehiculo_id):
+    cliente = request.form['cliente']
+    servicio = request.form['servicio']
+    bono = request.form['bono']
+    descricion = request.form['descricion']
+    print(f'Cliente: {cliente}', f'bono: {bono}', f'descricion: {descricion}', f'Servicio: {servicio}')
+
+    save = Serviciopago(monto = bono,
+                        descripcion=descricion,
+                        cliente_id=cliente,
+                        servicio_id=servicio)
+    db.session.add(save)
+    db.session.commit()
+    flash('Enviado con exicto!')
+    return redirect(url_for('.get_vehiculo',  vehiculo_id=vehiculo_id))
+
+@vehiculo.route('/carbrand', methods=['POST', 'GET'])
 def carbram():
     if request.method == 'POST':
         marca_id = request.form['marca_id']
-        print(marca_id)
         result = Modelo.query.filter_by(marca_id=marca_id).all()
         OutputArray = []
         for row in result:

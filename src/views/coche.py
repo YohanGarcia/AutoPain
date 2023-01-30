@@ -7,40 +7,56 @@ from flask_login import login_required
 from src import db
 
 from src.models.Coche import Marca, Modelo
-from src.forms.coche_form import MarcaForm, ModeloForm
+from src.forms.coche import MarcaForm
 
 coche = Blueprint('coche', __name__, url_prefix='/coche')
 
-@coche.route('/', methods=['GET', 'POST'])
-@coche.route('/marca', methods=['GET', 'POST'])
-@coche.route('/modelo', methods=['GET', 'POST'])
+
+@coche.route('/')
+@login_required
+def coche_all():
+    marcas = Marca.query.all()
+    marca_forms = MarcaForm(request.form)
+
+    return render_template('/coche/coche.html', marcas=marcas, form=marca_forms)
+
+@coche.route('/marca', methods=['GET','POST'])
 @login_required
 def marca():
-    form = MarcaForm()
-    get_marca = Marca.query.order_by(Marca.name)
-    if request.path == '/coche/marca':
-        if request.method == 'POST':
-                name = form.name.data
-                nueva_marca = Marca(name)
+    marca_forms = MarcaForm(request.form)
+    if request.method == 'POST' and marca_forms.validate():
+        get_marca = Marca.query.filter_by(name=marca_forms.name.data).first()
+        if get_marca:
+            flash('La marca ya exicte!.')
+            return redirect(url_for('coche.coche_all'))
+        marca = Marca(name=marca_forms.name.data)
+        db.session.add(marca)
+        db.session.commit()
+        flash('Marca registrada exitosamente!.')
+        return redirect(url_for('coche.coche_all'))
+    return redirect(url_for('coche.coche_all'))
+    
 
-                marca = Marca.query.filter_by(name=name).first()
-                if marca:
-                    return redirect(url_for('coche.marca', form=form, msg=f'la {marca.name} ya exicte'))
-                db.session.add(nueva_marca)
-                db.session.commit()
-                return redirect(url_for('coche.marca'))
+@coche.route('/modelo', methods=['POST'])
+@login_required
+def modelo():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        marca_id = request.form.get('marca')
 
-    if request.path == '/coche/modelo':
-        if request.method == 'POST':
-            name = request.form.get('name')
-            marca_id = request.form.get('marca')
+        get_modelo = Modelo.query.filter_by(name=name, marca_id=marca_id).first()
+        if get_modelo:
+            flash('El Coche ya exicte!.')
+            return redirect(url_for('coche.coche_all'))
+        get_name = Modelo.query.filter_by(name=name).first()
+        if get_name:
+            flash('El Modelo ya exicte!.')
+            return redirect(url_for('coche.coche_all'))        
 
-            modelo = Modelo.query.filter_by(name=name).first()
-            nuevo_modelo = Modelo(name, marca_id)
-            if modelo:
-                return render_template('coche/cochecreate.html',marcas=get_marca, form=form, msg=f'El modelo de coche {modelo.name} ya exicte')
-            db.session.add(nuevo_modelo)
-            db.session.commit()
-            return redirect(url_for('coche.marca'))
-    return render_template('coche/cochecreate.html', form=form, marcas=get_marca)
+        modelo = Modelo(name, marca_id)
+        db.session.add(modelo)
+        db.session.commit()
+        flash('Modelo registrada exitosamente!.')
+        return redirect(url_for('coche.coche_all'))
+    return redirect(url_for('coche.coche_all'))
 

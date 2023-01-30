@@ -1,0 +1,155 @@
+{% extends "layouts/base.html" %} {% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+
+{% block content %}
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- [ Main Content ] start -->
+                <div class="row">
+
+                    <!--[ Monthly  sales section ] starts-->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card Monthly-sales">
+                            <div class="card-block">
+                                <h6 class="mb-4">Gastos En los Producto Vendidos</h6>
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-9">
+                                        <h3 class="f-w-300 d-flex align-items-center  m-b-0"><i
+                                                class=" text-c-red f-30 m-r-10"></i>
+
+                                            {{format_number(gastos_total) }}
+                                        </h3>
+                                    </div>
+                                </div>
+                                <div class="progress m-t-30" style="height: 7px;">
+                                    <div class="progress-bar progress-c-theme2" role="progressbar" style="width: 100%;"
+                                        aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--[ Monthly  sales section ] end-->
+                    <!--[ year  sales section ] starts-->
+                    <div class="col-md-12 col-xl-4">
+                        <div class="card yearly-sales">
+                            <div class="card-block">
+                                <h6 class="mb-4">Venta En General</h6>
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-9">
+                                        <h3 class="f-w-300 d-flex align-items-center  m-b-0"><i
+                                                class=" text-c-green f-30 m-r-10"></i>{{format_number(venta_total)
+                                            }}
+                                        </h3>
+                                    </div>
+                                   
+                                </div>
+                                <div class="progress m-t-30" style="height: 7px;">
+                                    <div class="progress-bar progress-c-theme" role="progressbar" style="width: 100%;"
+                                        aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--[ year  sales section ] end-->
+
+                    <!--[ daily sales section ] start-->
+                    <div class="col-md-6 col-xl-4">
+                        <div class="card daily-sales">
+                            <div class="card-block">
+                                <h6 class="mb-4">Ganancia En General</h6>
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-9">
+                                        <h3 class="f-w-300 d-flex align-items-center m-b-0"><i
+                                                class=" text-c-green f-30 m-r-10"></i>{{format_number(ganacia_total)}}
+                                        </h3>
+                                    </div>
+
+                                </div>
+                                <div class="progress m-t-30" style="height: 7px;">
+                                    <div class="progress-bar progress-c-theme" role="progressbar" style="width: 100%;"
+                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--[ daily sales section ] end-->
+
+                    <!-- [ Hover-table ] start -->
+                    <div class="col-xl-12 pt-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Historial de ventas de productos</h5>
+
+                            </div>
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Fecha</th>
+                                                <th>Vehiculo</th>
+                                                <th>Servicio</th>
+                                                <th>Empleado</th>
+                                                <th>Producto</th>
+                                                <th>Descripcion</th>
+                                                <th>Precio ventas</th>
+                                                <th>Unidad</th>
+                                                <th>Cantidad</th>
+                                                <th>Total</th>
+                                                <th>Ganacias</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for inventario in historial_ventas_products %}
+                                            <tr>
+                                                <td>{{current_date_format(inventario.created)}}</td>
+                                                <td>{{inventario.vehiculos.marcas}} {{inventario.vehiculos.modelos}}
+                                                </td>
+                                                <td>{{inventario.servicios.serviciolistas.name}}</td>
+                                                <td>{{inventario.empleados.name}} {{inventario.empleados.lastname}}</td>
+                                                <td>{{inventario.productos.name}}</td>
+                                                <td>{{inventario.productos.descrition}}</td>
+                                                <td>{{format_number(inventario.precio)}}</td>
+                                                <td>{{inventario.productos.unidades.typo}}
+                                                    {{inventario.cantidad_unidades.name}}</td>
+                                                <td>{{inventario.cantidad}}</td>
+                                                <td>
+                                                    {{format_number(inventario.cantidad *
+                                                    (inventario.cantidad_unidades.unidad *
+                                                    inventario.precio))}}
+                                                </td>
+                                                <td>
+                                                    {{format_number(inventario.cantidad * (inventario.precio -
+                                                    inventario.productos.precio))}}
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [ Hover-table ] end -->
+                </div>
+                <!-- [ collapse ] end -->
+            </div>
+            <!-- [ Main Content ] end -->
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+{% endblock javascripts %}

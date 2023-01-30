@@ -1,0 +1,65 @@
+<div class="card">
+    <div class="card-header">
+        <h5>Consumir Productos</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12">
+                <span class="mb-0 text-muted">
+                    {% if msg %}
+                    <span class="text-danger">{{ msg | safe }}</span>
+
+                    {% endif %}
+                </span>
+                <form role="form" method="post" action="/productos/consumir">
+                    <div class="row">
+                        <input type="hidden" name="id_vehiculos" value="{{vehiculo.id}}">
+                        <input type="hidden" name="id_servicios" value="{{servicio.id}}">
+                        <input type="hidden" name="ruta" value="{{ruta}}">
+
+                        <div class="col-md-6 form-group">
+                            <label>Seleciona el Elmpleado</label>
+                            <select class="form-control form-control-lg" data-live-search="true" name="id_empleados">
+                                <option value="none" selected disabled hidden>Empleados</option>
+                                {% for empleado in empleados %}
+                                <option value={{empleado.id}}>{{empleado.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Producto</label>
+                            <select class="form-control" name="producto" data-live-search="true" id="producto">
+                                <option value="none" selected disabled hidden>Productos</option>
+
+                                {% for producto in productos %}
+                                <option value={{producto.id}}>{{producto.name}}
+                                    {{producto.descrition}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Unidad</label>
+                            <select class="form-control" data-live-search="true" name="cantidad" id="cantidad">
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Cantidad</label>
+                            <input type="text" name="cantidades" placeholder="Cantidad" class="form-control">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>Precio de venta</label>
+                            <input type="number" name="precio_venta" placeholder="Precio de venta"
+                                class="form-control">
+                        </div>
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-primary">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

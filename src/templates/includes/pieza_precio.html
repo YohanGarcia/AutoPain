@@ -1,0 +1,28 @@
+{% block stylesheets %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" />
+{% endblock stylesheets %}
+
+
+
+<form action="{{ url_for('asignacion.asignacion3',servicio_id=servicio.id,vehiculo_id=vehiculo.id) }}" method="post">
+    <div class="row">
+        <div class="col-md-6 form-group">
+
+            <select class="form-control" name="id_pieza" data-live-search="true" id="id_pieza">
+                <option value="none" selected disabled hidden>Piezas</option>
+                {% for pieza in piezas %}
+                <option value={{pieza.id}}>{{pieza.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-6 form-group">
+            <select class="form-control" data-live-search="true" name="id_precio" id="id_precio">
+            </select>
+        </div>
+        <div class="col-md-12  text-center pt-3">
+            <button type="submit" class="btn btn-success">Enviar</button>
+        </div>
+    </div>
+</form>

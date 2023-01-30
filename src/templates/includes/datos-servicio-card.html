@@ -1,0 +1,81 @@
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0">
+            Datos del Servicios
+        </h5>
+    </div>
+    <div class="col-md-12">
+        <ul class="list-group list-group-flush">
+            <div class="row">
+
+                <div class="col-md-4">
+                    <li class="list-group-item">
+                        <span class="font-weight-bold text-uppercase">Cliente: </span>
+                        {{ vehiculo.clientes.username}} {{ vehiculo.clientes.lastname }}
+                    </li>
+                </div>
+                <div class="col-md-4">
+                    <li class="list-group-item">
+                        <span class="font-weight-bold text-uppercase">Coche: </span>
+                        {{ vehiculo.marcas }} {{ vehiculo.modelos }}
+                    </li>
+                </div>
+                <div class="col-md-4">
+                    <li class="list-group-item">
+                        <span class="font-weight-bold text-uppercase">Año: </span>
+                        {{vehiculo.age}}
+                    </li>
+                </div>
+                <div class="col-md-4">
+                    <li class="list-group-item">
+                        <span class="font-weight-bold text-uppercase">Placa: </span>
+
+                        {{vehiculo.placa}}
+                    </li>
+                </div>
+                <div class="col-md-4">
+                    <li class="list-group-item">
+                        <span class="font-weight-bold text-uppercase">Color: </span>
+
+                        {{vehiculo.color}}
+                    </li>
+                </div>
+                <div class="col-md-4">
+                    <li class="list-group-item">
+                        <span class="font-weight-bold text-uppercase">Fecha: </span>
+
+                        {{current_date_format(vehiculo.created)}}
+                    </li>
+                </div>
+                <div class="col-md-4">
+                    <li class="list-group-item">
+                        <span class="font-weight-bold text-uppercase">Servicio: </span>
+
+                        {{servicio.serviciolistas.name}}
+                    </li>
+                </div>
+                <div class="col-md-4">
+
+               
+                        <li class="list-group-item">
+                            <span class="font-weight-bold text-uppercase">Precio del servicio: </span>
+                         {{format_number(counter) }}
+                        </li>
+                  
+                </div>
+                <div class="col-md-4">
+                    {% set points = [0] -%}
+                    {% for pagos in servicio.serviciopagos -%}
+                    {% if points.append(points.pop()+ pagos.monto) -%}{% endif %}
+                    {% endfor %}
+                    <li class="list-group-item">
+                        <span class="font-weight-bold text-uppercase">
+                            Bonos del Cliente:
+                        </span>
+                        {{format_number(points[-1])}}
+                    </li>
+                </div>
+            </div>
+        </ul>
+    </div>
+</div>
