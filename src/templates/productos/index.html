@@ -72,40 +72,29 @@
                         <div class="card">
                             <div class="card-header">
                                 <h5>Productos en el invetario</h5>
-                                
+
                             </div>
                             <div class="card-block table-border-style">
                                 <div class="table-responsive">
                                     <table class="table table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Fecha</th>
-                                                <th>Producto</th>
-                                                <th>Descripcion</th>
-                                                <th>Precio</th>
-                                                <th>Unidad</th>
-                                                <th>Valor</th>
-                                                <th>Cantidad</th>
-                                                <th>Total</th>
+                                                <th>Productos</th>
+                                                <th>Cantidad. Ingr</th>
+                                                <th>Cantidad. Vend </th>
+                                                <th>Cantidad. Invt</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for inventario in inventarios %}
+                                            {% for name, descrition, cantidad in productos_vendidos %}
                                             <tr>
-                                                <td>{{current_date_format(inventario.created)}}</td>
-                                                <td>{{inventario.productos.name}}</td>
-                                                <td>{{inventario.productos.descrition}}</td>
-                                                <td>{{format_number(inventario.productos.precio)}}</td>
-                                                <td>{{inventario.productos.unidades.typo}} {{inventario.cantidad_unidades.name}}</td>
-                                                <td>
-                                                    {{format_number(inventario.cantidad_unidades.unidad *
-                                                    inventario.productos.precio)}}
-                                                </td>
-                                                <td>{{inventario.cantidad}}</td>
-                                                <td>
-                                                    {{format_number(inventario.cantidad * (inventario.cantidad_unidades.unidad *
-                                                    inventario.productos.precio))}}
-                                                </td>
+                                                <td>{{name}} {{descrition}}</td>
+                                               
+                                                <td>{{cantidad}}</td>
+                                                
+                                                <td>{{productos_vendidos[(name, descrition, cantidad)]}}</td>
+                                                
+                                                <td>{{ cantidad - productos_vendidos[(name, descrition, cantidad)] }}</td>
                                             </tr>
                                             {% endfor %}
                                         </tbody>

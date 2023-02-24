@@ -53,3 +53,13 @@ function showForm4() {
   document.getElementById("form3").style.display = "none";
   document.getElementById("form4").style.display = "block";
 }
+
+
+let cantidad = document.getElementById("cantidad");
+let cantidades = document.getElementById("cantidades");
+
+if (valorSeleccionado === "UNID") {
+  input.value = "Datos para UNID";
+} else if (valorSeleccionado === "Libre") {
+  input.value = "Datos para Libre";
+}

@@ -12,7 +12,7 @@ from src.models.Productos import HistorialVentas
 
 
 
-historial_ventas = Blueprint('historial-ventas', __name__, url_prefix='/producto/historial-ventas')
+historial_ventas = Blueprint('historial-ventas', __name__, url_prefix='/productos/historial-ventas')
 
 @historial_ventas.route('/')
 @login_required

@@ -99,9 +99,7 @@
                                                 <th>Servicio</th>
                                                 <th>Empleado</th>
                                                 <th>Producto</th>
-                                                <th>Descripcion</th>
                                                 <th>Precio ventas</th>
-                                                <th>Unidad</th>
                                                 <th>Cantidad</th>
                                                 <th>Total</th>
                                                 <th>Ganacias</th>
@@ -111,24 +109,17 @@
                                             {% for inventario in historial_ventas_products %}
                                             <tr>
                                                 <td>{{current_date_format(inventario.created)}}</td>
-                                                <td>{{inventario.vehiculos.marcas}} {{inventario.vehiculos.modelos}}
-                                                </td>
+                                                <td>{{inventario.vehiculos.marcas}} {{inventario.vehiculos.modelos}} {{inventario.vehiculos.placa}}</td>
                                                 <td>{{inventario.servicios.serviciolistas.name}}</td>
                                                 <td>{{inventario.empleados.name}} {{inventario.empleados.lastname}}</td>
-                                                <td>{{inventario.productos.name}}</td>
-                                                <td>{{inventario.productos.descrition}}</td>
+                                                <td>{{inventario.productos.name}} {{inventario.productos.descrition}}</td>
                                                 <td>{{format_number(inventario.precio)}}</td>
-                                                <td>{{inventario.productos.unidades.typo}}
-                                                    {{inventario.cantidad_unidades.name}}</td>
                                                 <td>{{inventario.cantidad}}</td>
                                                 <td>
-                                                    {{format_number(inventario.cantidad *
-                                                    (inventario.cantidad_unidades.unidad *
-                                                    inventario.precio))}}
+                                                    {{format_number(inventario.cantidad * (inventario.cantidad_unidades.unidad * inventario.precio))}}
                                                 </td>
                                                 <td>
-                                                    {{format_number(inventario.cantidad * (inventario.precio -
-                                                    inventario.productos.precio))}}
+                                                    {{format_number(inventario.cantidad * (inventario.precio - inventario.productos.precio))}}
                                                 </td>
                                             </tr>
                                             {% endfor %}

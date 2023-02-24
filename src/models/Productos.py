@@ -35,7 +35,6 @@ class Producto(db.Model):
     unidades = relationship("Unidad", back_populates="productos")
 
     inventarioproductos = relationship("InventarioProducto", back_populates="productos")
-    historialventas = relationship("HistorialVentas", back_populates="productos")
 
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     status = db.Column(db.Boolean, unique=False, default=True)
@@ -53,6 +52,8 @@ class InventarioProducto(db.Model):
 
     cantidad_unidades = relationship("CantidadUnidad", back_populates="inventarioproductos")
     productos = relationship("Producto", back_populates="inventarioproductos")
+
+    historialventas = relationship("HistorialVentas", back_populates="inventarioproductos")
     
 
 class HistorialVentas(db.Model):
@@ -63,8 +64,8 @@ class HistorialVentas(db.Model):
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     status = db.Column(db.Boolean, unique=False, default=True)
 
-    id_productos = db.Column(db.Integer, db.ForeignKey("productos.id"), nullable=False)
-    productos = relationship("Producto", back_populates="historialventas")
+    id_inventario_productos = db.Column(db.Integer, db.ForeignKey("inventarioproductos.id"), nullable=False)
+    inventarioproductos = relationship("InventarioProducto", back_populates="historialventas")
 
     id_empleados = db.Column(db.Integer, db.ForeignKey("empleados.id"), nullable=False)
     empleados = relationship("Empleado", back_populates="historialventas")

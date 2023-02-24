@@ -26,14 +26,23 @@ def index():
     query_historial = HistorialVentas.query.all()
     query_inventario = InventarioProducto.query.all()
 
+    productos_vendidos = {}
+    for inventario_producto in query_inventario:
+        total_ventas = 0.0
+        for venta in query_historial:
+            if inventario_producto.productos.id == venta.id_productos:
+                total_ventas += venta.cantidad
+        productos_vendidos[inventario_producto.productos.name, inventario_producto.productos.descrition, inventario_producto.cantidad] = total_ventas
+    
     return render_template(
         'productos/index.html',
         productos=query_productos,
         unidad=query_unidad,
-        historial=query_historial,
+        historial_ventas=query_historial,
         inventarios=query_inventario,
         current_date_format=current_date_format,
-        format_number=format_number
+        format_number=format_number,
+        productos_vendidos=productos_vendidos
     )
 
 
@@ -69,14 +78,32 @@ def registrar_nuevo():
 def registrar():
     if request.method == 'POST':
         invetario = InventarioProducto()
+        print('1')
         try:
-            invetario.id_producto = request.form.get('producto')
-            invetario.id_cantidad_unidades = request.form.get('cantidad')
-            invetario.cantidad = request.form.get('cantidades')
+            id_producto = request.form.get('producto')
+            id_cantidad_unidades = request.form.get('cantidad')
+            cantidad = float(request.form.get('cantidades'))
+            print('2')
+            
 
-            db.session.add(invetario)
-            db.session.commit()
-            flash('Producto Creado con exicto!', 'success')
+            query_inventario = InventarioProducto.query.filter_by(id_producto=id_producto).first()
+
+            if not query_inventario:
+                print('3')
+                invetario.id_producto = id_producto
+                invetario.id_cantidad_unidades = id_cantidad_unidades
+                invetario.cantidad = cantidad
+            
+                db.session.add(invetario)
+                db.session.commit()
+                flash('Producto Creado con exicto!', 'success')
+
+            else:
+                print('4')
+                query_inventario.cantidad = query_inventario.cantidad + cantidad
+                db.session.commit()
+                flash('Producto Acualizado!', 'success')
+            
         except Exception as e:
             print(e)
         return redirect(url_for('producto.index'))
@@ -166,11 +193,16 @@ def consumir():
         id_vehiculos = request.form.get('id_vehiculos')
         id_servicios = request.form.get('id_servicios')
         id_productos = request.form.get('producto')
-        cantidad =float(request.form.get('cantidades'))
         id_cantidad_unidades = request.form.get('cantidad')
         id_empleados = request.form.get('id_empleados')
         precio_venta = request.form.get('precio_venta')
         ruta = request.form.get('ruta')
+        cantidad = request.form.get('cantidades')
+        cantidad2 = request.form.get('cantidades2')
+        print(f'cantidad {cantidad}')
+        print(f'Cantidad2 {cantidad2}')
+
+
         if id_vehiculos is None:
             flash('selecione el vehiculo')
             return redirect(ruta)
@@ -180,29 +212,36 @@ def consumir():
         elif id_productos is None:
             flash('selecione el producto')
             return redirect(ruta)
-        elif cantidad is None:
-            flash('selecione la cantidad')
-            return redirect(ruta)
-        elif id_cantidad_unidades is None:
-            flash('selecione la unidad')
-            return redirect(ruta)
+        
         elif id_empleados is None:
             flash('selecione el enpleado')
             return redirect(ruta)
         elif precio_venta is None:
             flash('ingrese el precio de venta')
             return redirect(ruta)
-        else:
+        elif cantidad != '':
             return Consumir_producto(
                 id_vehiculo=id_vehiculos,
                 id_servicios=id_servicios,
                 id_productos=id_productos,
                 id_cantidad_unidades=id_cantidad_unidades,
-                cantidad=cantidad,
+                cantidad=float(cantidad),
                 id_empleados=id_empleados,
                 precio_venta=precio_venta,
                 ruta=ruta
             )
+        elif cantidad2 is not None:
+            return Consumir_producto(
+                id_vehiculo=id_vehiculos,
+                id_servicios=id_servicios,
+                id_productos=id_productos,
+                id_cantidad_unidades=id_cantidad_unidades,
+                cantidad=float(cantidad2),
+                id_empleados=id_empleados,
+                precio_venta=precio_venta,
+                ruta=ruta
+            )
+       
     return render_template('productos/consumir.html', 
                             servicios=query_servicio, vehiculos=query_vehiculo,
                             empleados=query_empleados, productos=query_productos,
