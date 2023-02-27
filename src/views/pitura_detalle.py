@@ -11,7 +11,7 @@ from src.helper import current_date_format
 from src.heltper.empleado_total import Empleado_total
 from src.heltper.enumerate_pieza import enumerate_serviciopiezas
 from src.heltper.formato import format_number
-from src.models.Productos import HistorialVentas, Producto
+from src.models.Productos import HistorialVentas, Producto, InventarioProducto
 
 from src.models.Servicio import Servicio, Serviciolista, Servicioprecio, Serviciopieza
 from src.models.Vehiculo import Vehiculo
@@ -30,8 +30,9 @@ def index(servicio_id, vehiculo_id):
     servicio = Servicio.query.filter_by(id=servicio_id).first()
     serviciopiezas = Serviciopieza.query.filter_by(servicio_id=servicio_id).all()
     query_productos = Producto.query.filter_by(status=True).all()
-    venta = HistorialVentas.query.filter_by(status=True, id_servicios=servicio_id, id_vehiculos=vehiculo_id).all()
+    venta = HistorialVentas.query.filter_by(id_servicios=servicio_id, id_vehiculos=vehiculo_id).all()
     asignaciones = Asignacion.query.filter_by(servicio_id=servicio_id).all()
+    query_hinventario_productos = InventarioProducto.query.filter_by(status=True).all()
     piezas = Pieza.query.all()
     empleados = Empleado.query.all()
     trabajos = Trabajo.query.all()
@@ -71,6 +72,7 @@ def index(servicio_id, vehiculo_id):
         current_date_format=current_date_format,
         ruta=request.path,
         productos=query_productos,
+        query_hinventario_productos=query_hinventario_productos,
         ventas=venta
     )
 

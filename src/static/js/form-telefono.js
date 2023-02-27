@@ -1,12 +1,12 @@
-function formatearTelefono() {
-  var telefono = document.getElementById("telefono").value;
-  var expresionRegularTelefono = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-  if (!expresionRegularTelefono.test(telefono)) {
-    var nuevoTelefono = telefono.replace(/[^0-9]/g, '')
-      .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
-    document.getElementById("telefono").value = nuevoTelefono;
-  }
-}
+// function formatearTelefono() {
+//   var telefono = document.getElementById("telefono").value;
+//   var expresionRegularTelefono = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,7}$/im;
+//   if (!expresionRegularTelefono.test(telefono)) {
+//     var nuevoTelefono = telefono.replace(/[^0-9]/g, '')
+//       .replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+//     document.getElementById("telefono").value = nuevoTelefono;
+//   }
+// }
 
 const select = document.querySelector("select");
 select.addEventListener("change", function() {

@@ -24,9 +24,9 @@
                         <tr>
                             <td>{{venta.empleados.name}} {{venta.empleados.lastname}}</td>
                             <td>{{current_date_format(venta.created)}}</td>
-                            <td>{{venta.productos.name}} {{venta.productos.descrition}}</td>
-                            <td>{{venta.productos.unidades.typo}} {{venta.cantidad_unidades.name}}</td>
-                            <td>{{format_number(venta.productos.precio)}}</td>
+                            <td>{{venta.inventarioproductos.productos.name}} {{venta.inventarioproductos.productos.descrition}}</td>
+                            <td>{{venta.inventarioproductos.productos.unidades.typo}} {{venta.cantidad_unidades.name}}</td>
+                            <td>{{format_number(venta.inventarioproductos.productos.precio)}}</td>
                             <td>{{venta.cantidad}}</td>
                             <td>{{format_number(venta.precio)}}</td>
                             <td>

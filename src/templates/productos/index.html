@@ -82,19 +82,21 @@
                                                 <th>Productos</th>
                                                 <th>Cantidad. Ingr</th>
                                                 <th>Cantidad. Vend </th>
-                                                <th>Cantidad. Invt</th>
+                                                <th>Cantidad disponible</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% for name, descrition, cantidad in productos_vendidos %}
+                                            {% for name, descrition, cantidad, stado in productos_vendidos %}
                                             <tr>
                                                 <td>{{name}} {{descrition}}</td>
                                                
                                                 <td>{{cantidad}}</td>
                                                 
-                                                <td>{{productos_vendidos[(name, descrition, cantidad)]}}</td>
+                                                <td>{{productos_vendidos[(name, descrition, cantidad, stado)]}}</td>
                                                 
-                                                <td>{{ cantidad - productos_vendidos[(name, descrition, cantidad)] }}</td>
+                                                <td>{{ cantidad - productos_vendidos[(name, descrition, cantidad, stado)] }}</td>
+
+                                            
                                             </tr>
                                             {% endfor %}
                                         </tbody>

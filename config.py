@@ -13,4 +13,4 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     DEBUG=True
     TESTING=True
-    SECRET_KEY='sbnmjfdlolejax2851A@'
+    SECRET_KEY='sbnmjfdlolejax2851A@'  

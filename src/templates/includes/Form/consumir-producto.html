@@ -31,9 +31,10 @@
                             <select class="form-control" name="producto" data-live-search="true" id="producto">
                                 <option value="none" selected disabled hidden>Productos</option>
 
-                                {% for producto in productos %}
-                                <option value={{producto.id}}>{{producto.name}}
-                                    {{producto.descrition}}</option>
+                                {% for hinventario_producto in query_hinventario_productos %}
+                                <option value={{hinventario_producto.id}}>
+                                    {{hinventario_producto.productos.name}} {{hinventario_producto.productos.descrition}}
+                                </option>
                                 {% endfor %}
                             </select>
                         </div>
