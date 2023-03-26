@@ -26,7 +26,7 @@
                                 <h2 class="mt-3 f-w-300">{{cliente.vehiculos|length}}<sub
                                         class="text-muted f-14">Vehiculo Registrados</sub></h2>
 
-                                <a href="/vehiculo/create/cliente/{{cliente.id}}" class="label theme-bg text-white f-12">Agregar
+                                <a href="/vehiculo/create/cliente/{{cliente.id}}" class="label theme-bg text-white">Agregar
                                     vehiculo</a>
                             </div>
                         </div>
@@ -53,16 +53,21 @@
                                     </thead>
                                     <tbody>
                                     {% for vehiculo in cliente.vehiculos %}
-                                        <tr>
+                                        <tr class="unread">
                                             <td>{{vehiculo.marcas}} {{vehiculo.modelos}}</td>
                                             <td>{{vehiculo.age}}</td>
                                             <td>{{vehiculo.placa}}</td>
                                             <td>{{vehiculo.color}}</td>
                                             <td>{{current_date_format(vehiculo.created)}}</td>
                                             <td>
-                                                <a href="/vehiculo/ver/{{vehiculo.id}}" class="label theme-bg text-white f-12">
+                                                <a href="/vehiculo/ver/{{vehiculo.id}}" class="label theme-bg text-white">
                                                     ver vehiculo
                                                 </a>
+                                                {% if not vehiculo.servicios %}
+                                                <form action="/cliente/vehiculo/delete/{{vehiculo.id}}/{{cliente.id}}" method="post" style="display: inline-block;">
+                                                  <input type="submit" class="border-0 text-white label theme-red" value="Eliminar" role="button" style="cursor: pointer;">
+                                                </form>
+                                                {% endif %}
                                             </td>
                                         </tr>
                                     {% endfor %}

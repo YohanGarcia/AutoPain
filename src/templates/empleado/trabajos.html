@@ -1,0 +1,154 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} UI Forms {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<section style="background-color: #eee;">
+    <div class="container py-5">
+        <!-- <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">User</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">User Profile</li>
+                    </ol>
+                </nav>
+            </div>
+        </div> -->
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+                            alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                        <h5 class="my-3">{{empleado.name}}</h5>
+                        <p class="text-muted mb-1">
+                            {% if empleado.status %}
+                            <i class="fas fa-circle text-c-green f-10 m-r-15"></i>
+                            {% else %}
+                            <i class="fas fa-circle text-c-red f-10 m-r-15"></i>
+                            {% endif %} {{current_date_format(empleado.created)}}
+                        </p>
+                        <!-- <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> -->
+                        <!-- <div class="d-flex justify-content-center mb-2">
+                            <button type="button" class="btn btn-primary">Follow</button>
+                            <button type="button" class="btn btn-outline-primary ms-1">Message</button>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Nombre</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{empleado.name}} {{empleado.lastname}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{empleado.correo}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Telefono</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{empleado.telefono}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Telefono Casa</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{empleado.telefonocasa}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Cedula</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{empleado.cedula}}</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Fecha de nacimiento</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0">{{empleado.nacimiento}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="col-sm-12">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
+                            aria-controls="pills-home" aria-selected="true">Todos los trabajos realizados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+                            aria-controls="pills-profile" aria-selected="false">Trabajos Pagados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+                            aria-controls="pills-contact" aria-selected="false">Trabajos Terminano sin pagar</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                        aria-labelledby="pills-home-tab">
+                        <p class="mb-0">Consequat occaecat ullamco amet non eiusmod nostrud dolore irure incididunt est
+                            duis anim sunt officia. Fugiat velit proident aliquip nisi incididunt nostrud exercitation
+                            proident est nisi. Irure magna elit commodo anim ex veniam culpa eiusmod id nostrud sit
+                            cupidatat in veniam ad. Eiusmod consequat eu adipisicing minim anim aliquip cupidatat culpa
+                            excepteur quis. Occaecat sit eu exercitation irure Lorem incididunt nostrud.
+                        </p>
+                    </div>
+                    <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <p class="mb-0">Ad pariatur nostrud pariatur exercitation ipsum ipsum culpa mollit commodo
+                            mollit ex. Aute sunt incididunt amet commodo est sint nisi deserunt pariatur do. Aliquip ex
+                            eiusmod voluptate exercitation cillum id incididunt elit sunt. Qui minim sit magna Lorem id
+                            et dolore velit Lorem amet exercitation duis deserunt. Anim id labore elit adipisicing ut in
+                            id occaecat pariatur ut ullamco ea tempor duis.
+                        </p>
+                    </div>
+                    <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                        {% if datos_piezas %}
+                        {% include 'includes/pieza-pagar.html' %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+{% endblock javascripts %}

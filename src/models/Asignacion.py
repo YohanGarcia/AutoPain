@@ -5,7 +5,7 @@ from src import db
 class Asignacion(db.Model):
     __tablename__ = 'asignaciones'
     id = db.Column(db.Integer, primary_key=True)
-    precio = db.Column(db.Integer)
+    pagado = db.Column(db.Boolean, default=False)
 
     empleado_id = db.Column(db.Integer, db.ForeignKey("empleados.id"))
     empleados = relationship("Empleado", back_populates="asignaciones")

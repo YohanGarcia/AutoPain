@@ -17,7 +17,7 @@ class Pieza(db.Model):
     def __init__(self, name) -> None:
         self.name = name
     def __repr__(self) -> str:
-        return  self.id
+        return  self.name
 
 class PiezaPrecio(db.Model):
     __tablename__ = 'pieza_precios'
@@ -28,3 +28,4 @@ class PiezaPrecio(db.Model):
     piezas = relationship("Pieza", back_populates="pieza_precios")
 
     serviciopiezas = relationship("Serviciopieza", back_populates="pieza_precios")
+  

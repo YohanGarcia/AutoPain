@@ -4,6 +4,7 @@ from flask import(
 from flask_login import login_required
 
 from src.models.Cliente import Cliente
+from src.models.Vehiculo import Vehiculo
 
 from src import db
 
@@ -56,6 +57,7 @@ def cliente_all():
     clientes = Cliente.query.filter().order_by(Cliente.username,
         Cliente.lastname,
         Cliente.telefono).paginate(page=page, per_page=5)
+
     return render_template('/cliente/index.html', clientes=clientes, current_date_format=current_date_format)
 
 @cliente.route('/ver/<int:cliente_id>')
@@ -63,3 +65,49 @@ def cliente_all():
 def ver_cliente(cliente_id):
     clientes = Cliente.query.filter_by(id=cliente_id).first()
     return render_template('/cliente/ver.html', cliente=clientes, current_date_format=current_date_format)
+
+@cliente.route('/delete/<int:id>', methods=['POST'])
+def cliente_delete(id):
+    cliente = Cliente.query.filter_by(id=id).first()
+    cliente_vehiculo = Vehiculo.query.filter_by(cliente_id=cliente.id).all()
+    try:
+        if not cliente:
+            flash("Error de servidor al intentar eliminar el cliente")
+            return redirect(url_for('.cliente_all'))    
+
+        if cliente and not cliente_vehiculo:
+            db.session.delete(cliente)
+            db.session.commit()
+            flash('Cliente eliminada')
+            return redirect(url_for('.cliente_all'))
+
+        if cliente and cliente_vehiculo:
+            for vehiculo in cliente_vehiculo:       
+                db.session.delete(vehiculo)
+            db.session.delete(cliente)
+            db.session.commit()
+            print(f'Se elimino el cliente {cliente.username} y el vehoculo')
+            flash('Pieza y Precios eliminados')
+            return redirect(url_for('.cliente_all'))
+    except Exception as e:
+        print(e)
+        flash('Error al itentar eliminar')
+        return redirect(url_for('.cliente_all'))
+    
+@cliente.route('/vehiculo/delete/<int:id>/<int:clinte_id>', methods=['POST'])
+def cliente_vehiculo_delete(id,clinte_id):
+    cliente_vehiculo = Vehiculo.query.filter_by(id=id).first()
+    try:
+        if not cliente_vehiculo:
+            flash("Error de servidor al intentar eliminar el vehiculo")
+            return redirect(url_for('.ver_cliente', cliente_id=clinte_id))    
+
+        db.session.delete(cliente_vehiculo)
+        db.session.commit()
+        flash('Vehiculos eliminados')
+        return redirect(url_for('.ver_cliente', cliente_id=clinte_id))
+    except Exception as e:
+        print(e)
+        flash('Error al itentar eliminar')
+        return redirect(url_for('.ver_cliente', cliente_id=clinte_id))
+    

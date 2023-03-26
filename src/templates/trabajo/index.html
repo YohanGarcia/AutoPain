@@ -11,19 +11,8 @@
         <div class="row align-items-center">
           <div class="col-md-12">
             <div class="page-header-title">
-              <h5 class="m-b-10">Form Elements</h5>
+              <h5 class="m-b-10">Area de registro de trabajos</h5>
             </div>
-            <ul class="breadcrumb">
-              <li class="breadcrumb-item">
-                <a href="/"><i class="feather icon-home"></i></a>
-              </li>
-              <li class="breadcrumb-item">
-                <a href="javascript:">Form Componants</a>
-              </li>
-              <li class="breadcrumb-item">
-                <a href="javascript:">Form Elements</a>
-              </li>
-            </ul>
           </div>
         </div>
       </div>
@@ -41,18 +30,9 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-8">
-                    <form
-                      role="form"
-                      method="post"
-                      action="{{ url_for('trabajo.trabajo_create') }}"
-                    >
+                    <form role="form" method="post" action="{{ url_for('trabajo.trabajo_create') }}">
                       <div class="form-group">
-                        <input
-                          type="text"
-                          name="name"
-                          id=""
-                          class="form-control"
-                        />
+                        <input type="text" name="name" id="" class="form-control" />
                       </div>
                       <button type="submit" class="btn btn-primary">
                         enviar
@@ -69,31 +49,22 @@
                 <h5>Registro de Precios</h5>
               </div>
               <div class="col-md-12">
-              <form role="form" method="post" action="/trabajo/precio">
-                <div class="form-group">
-                  <select
-                    class="form-control"
-                    id="modelo_create"
-                    name="trabajo"
-                  >
-                    <option value="">Seleciona un trabajo</option>
-                    {% for trabajo in trabajos %}
-                    <option value="{{trabajo.id}}">{{trabajo.name}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Precio</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="precio"
-                    placeholder="Ingresa el precio"
-                  />
-                </div>
-                <button type="submit" class="btn btn-primary">enviar</button>
-              </form>
-            </div>
+                <form role="form" method="post" action="/trabajo/precio">
+                  <div class="form-group">
+                    <select class="form-control" id="modelo_create" name="trabajo">
+                      <option value="">Seleciona un trabajo</option>
+                      {% for trabajo in trabajos %}
+                      <option value="{{trabajo.id}}">{{trabajo.name}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Precio</label>
+                    <input type="number" class="form-control" name="precio" placeholder="Ingresa el precio" />
+                  </div>
+                  <button type="submit" class="btn btn-primary">enviar</button>
+                </form>
+              </div>
             </div>
           </div>
           <div class="col">
@@ -106,12 +77,17 @@
                   {% for trabajo in trabajos %}
                   <div class="card-header">
                     <h5 class="mb-0">{{trabajo.name}}</h5>
+                    <form action="/trabajo/delete/{{trabajo.id}}" method="post">
+                      <input type="submit" class="badge-danger border-0 text-white" value="Eliminar">
+                    </form>
                   </div>
                   <div class="card-body collapse show">
                     <ul>
                       {% for precio in trabajo.trabajoprecios %}
                       <li class="mb-0">
-                        <h4>{{precio.precio}}</h4>
+                        <h4>{{precio.precio}}  </h4>  <form action="/trabajo/delete/precio/{{precio.id}}" method="post">
+                          <input type="submit" class="badge-danger  border-0 text-white" value="Eliminar" role="button">
+                        </form>
                       </li>
                       {% endfor %}
                     </ul>

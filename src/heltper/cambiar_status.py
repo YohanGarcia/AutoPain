@@ -5,19 +5,18 @@ from src import db
 from src.models.Asignacion import Asignacion
 
 
-def Eliminar_asignacion_empleado(id, ruta):
+def Cambiar_status(id, ruta):
     asignacones = Asignacion.query.filter_by(id=id).first()
     try:
         if asignacones:
-            db.session.delete(asignacones)
+            
+            asignacones.status = False
             db.session.commit()
-            flash('Se a eliminado correctamente')
-            return redirect(ruta)
+            flash('Se canbio el satado')
+       
         else:
-            flash('Error al Eliminar')
-            return redirect(ruta)
+            flash('Error al cuambiar el stado')
+          
     except Exception as e:
         print(e)
-        
-
-
+     

@@ -54,7 +54,7 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label for="Modelo">Seleciona una Marca</label>
+                                                        <label for="Modelo">Seleciona una Pieza</label>
                                                         <select class="form-control" id="modelo_create" name="id_pieza">
                                                             <option value="">Seleciona una pieza</option>
                                                             {% for pieza in piezas %}
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12">
-                        <h5 class="mb-3">Lista de Coches</h5>
+                        <h5 class="mb-3">Lista de Pieza</h5>
                         <hr />
 
                         <div class="accordion">
@@ -91,12 +91,20 @@
                                 {% for pieza in piezas %}
                                 <div class="card-header">
                                     <h5 class="mb-0">{{pieza.name}}</h5>
+                                    <form id="eliminar-precio" action="/pieza/delete/{{pieza.id}}" method="post">
+                                        <input type="submit" class="badge-danger border-0 text-white" value="Eliminar" onclick="confirmarEliminacion(event)">
+                                    </form>
                                 </div>
                                 <div class="card-body collapse show">
                                     <ul>
                                         {% for precio in pieza.pieza_precios %}
                                         <li class="mb-0">
                                             <h4>{{precio.pieza_precio}}</h4>
+                                            <form id="eliminar-precio" action="/pieza/delete/precio/{{precio.id}}"
+                                                method="post">
+                                                <input type="submit" class="badge-danger border-0 text-white"
+                                                    value="Eliminar" role="button" onclick="confirmarEliminacion(event)">
+                                            </form>
                                         </li>
                                         {% endfor %}
                                     </ul>
@@ -117,4 +125,14 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+
+<script>
+    function confirmarEliminacion(event) {
+        event.preventDefault(); // Detiene la acción predeterminada del botón "Eliminar"
+        if (confirm('¿Está seguro de que desea eliminar este precio? ten en cuenta esto')) {
+            document.getElementById('eliminar-precio').submit(); // Envía la petición manualmente si el usuario hace clic en "Aceptar"
+        }
+    }
+</script>
+{% endblock javascripts %}

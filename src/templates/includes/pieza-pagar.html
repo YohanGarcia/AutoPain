@@ -1,0 +1,50 @@
+<div class="col-xl-12">
+    <div class="accordion">
+        {% for item in datos_piezas %}
+        {% for datos in item['datos'] %}
+        <div class="card">
+            {% for pieza in datos['pieza'] %}
+            <div class="card-header">
+                <h5 class="mb-0">
+                    {{pieza}}
+                </h5>
+            </div>
+            <!-- [ stiped-table ] start -->
+            <div class="card-block ">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr class="unread">
+                                <th>#</th>
+                                <th>Empleado</th>
+                                <th>Trabajos</th>
+                                <th>Precio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in pieza.asignaciones%}
+                            <tr class="unread">
+                                <td>{{item.id}}</td>
+                                <td>
+                                    {{ item.empleados.name }}
+                                </td>
+                                <td>
+                                    {{ item.trabajos.name }}
+                                </td>
+                                <td>
+                                 
+                                </td>
+                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- [ stiped-table ] end -->
+            {%endfor%}
+        </div>
+        {%endfor%}
+        {% endfor %}
+    </div>
+</div>

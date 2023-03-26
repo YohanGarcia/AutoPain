@@ -5,7 +5,7 @@ from flask import (
 from flask_login import login_required
 from src import db
 from src.heltper.formato import format_number
-from src.models.Servicio import Servicio, Serviciolista,Serviciopago, Serviciopieza
+from src.models.Servicio import Servicio, Serviciolista,Serviciopago, Serviciopieza, Servicioprecio
 from src.models.Vehiculo import Vehiculo
 from src.models.Coche import Marca, Modelo
 from src.models.Pieza import Pieza
@@ -96,3 +96,56 @@ def carbram():
             }
             OutputArray.append(outputObj)
     return jsonify(OutputArray)
+
+
+@vehiculo.route('/<int:vehiculo_id>/servicio/<int:servicio_id>', methods=['GET', 'POST'])
+def delete_servicio(vehiculo_id, servicio_id):
+    try:
+        get_servicio = Servicio.query.filter_by(id=servicio_id).first()
+       
+        if get_servicio.serviciolistas:
+            print('test 1')
+            serviciolistas_id = get_servicio.serviciolistas
+            db.session.delete(serviciolistas_id)
+            print('Nombre del servicio eliminado')
+
+        if get_servicio.serviciopagos:
+            print('test 2')
+
+            for serviciopago in get_servicio.serviciopagos:
+                print('test 3')
+                
+                db.session.delete(serviciopago)
+                print('Pagos del servicio eliminado')
+        if get_servicio.servicioprecios:
+            print('test 4')
+
+            for precio_id_servicio in get_servicio.servicioprecios:
+                print('test 5 1')
+                print(precio_id_servicio)
+                db.session.delete(precio_id_servicio)
+            print('Precio eliminado')
+        if get_servicio.serviciopiezas:
+            print('test 5')
+            for serviciopieza in get_servicio.serviciopiezas:
+                if serviciopieza.pieza_precios:
+                    print('test 6')
+                    db.session.delete(serviciopieza.pieza_precios)
+                    print('preio de pieza eliminado')
+                print('Piezas eliminadas')
+                db.session.delete(serviciopieza)
+        if get_servicio.asignaciones:
+            print('test 7')
+            for asignaciones in get_servicio.asignaciones:
+                print('test 8')
+                db.session.delete(asignaciones)
+                print('Aasignaciones eliminadas')
+
+        print('test 9')
+        print('test 10')
+        db.session.delete(get_servicio)
+        db.session.commit()
+        print('test 11')
+    except Exception as error:
+        print( error)
+    return redirect(url_for('.get_vehiculo', vehiculo_id=vehiculo_id))

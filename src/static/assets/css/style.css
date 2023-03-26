@@ -66,6 +66,10 @@ body {
   position: relative;
 }
 
+/* select */
+
+
+
 *:focus {
   outline: none;
 }
@@ -139,6 +143,10 @@ strong {
 
 .theme-bg2 {
   background: linear-gradient(-135deg, #899FD4 0%, #A389D4 100%);
+}
+
+.theme-red {
+  background: linear-gradient(-135deg, #FF1744 0%, #D50000 100%);
 }
 
 /* ==========  card css start  =========== */

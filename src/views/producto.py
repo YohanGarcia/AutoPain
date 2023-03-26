@@ -28,6 +28,7 @@ def index():
     productos_vendidos = {}
     for inventario_producto in query_inventario:
         total_ventas = 0.0
+        stado = None 
         for venta in query_historial:
             stado = venta.status
             if inventario_producto.id == venta.id_inventario_productos:

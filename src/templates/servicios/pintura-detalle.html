@@ -2,10 +2,7 @@
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}
-<link rel="stylesheet" href="{{ url_for('static', filename='/css/mobiscroll.javascript.min.css') }}" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" />
-<link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
 {% endblock stylesheets %} {% block content %}
 
 <div class="pcoded-content">
@@ -22,7 +19,8 @@
                         <button id="button1" class="btn btn-secondary" onclick="showForm1()">Agregar Piezas</button>
 
                         <!-- Botón 2 -->
-                        <button id="button2" class="btn btn-secondary" onclick="showForm2()">Asignar Precios a cada pieza</button>
+                        <button id="button2" class="btn btn-secondary" onclick="showForm2()">Asignar Precios a cada
+                            pieza</button>
                         <!-- Botón 3 -->
                         <button id="button3" class="btn btn-secondary" onclick="showForm3()">Asignar Empleados</button>
                         <!-- Botón 4 -->
@@ -122,6 +120,7 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
 <script>
     mobiscroll.setOptions({
         locale: mobiscroll.localeEs, // Specify language like: locale: mobiscroll.localePl or omit setting to use default
@@ -137,12 +136,19 @@
 <script>
     // Ignore this in your implementation
     window.isMbscDemo = true;
+    $(document).ready(function () {
+
+        var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+            removeItemButton: true,
+            maxItemCount: 35,
+            searchResultLimit: 35,
+            renderChoiceLimit: 35
+        });
+
+
+    });
 </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -227,5 +233,28 @@
             load_data("carModeldata", marca_id);
         });
     });
+</script>
+
+
+<script>
+    function getCars() {
+        var trabajo_id = document.getElementById("car_trabajo").value;
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/pintura/detalle/get_cars/" + trabajo_id);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var cars = JSON.parse(xhr.responseText);
+                var select = document.getElementById("car_precio");
+                select.innerHTML = "";
+                for (var i = 0; i < cars.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = cars[i].id;
+                    option.text = cars[i].name;
+                    select.add(option);
+                }
+            }
+        };
+        xhr.send();
+    }
 </script>
 {% endblock javascripts %}

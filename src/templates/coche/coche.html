@@ -5,30 +5,6 @@
 
 <div class="pcoded-content">
   <div class="pcoded-inner-content">
-    <!-- [ breadcrumb ] start -->
-    <div class="page-header">
-      <div class="page-block">
-        <div class="row align-items-center">
-          <div class="col-md-12">
-            <div class="page-header-title">
-              <h5 class="m-b-10">Form Elements</h5>
-            </div>
-            <ul class="breadcrumb">
-              <li class="breadcrumb-item">
-                <a href="/"><i class="feather icon-home"></i></a>
-              </li>
-              <li class="breadcrumb-item">
-                <a href="javascript:">Form Componants</a>
-              </li>
-              <li class="breadcrumb-item">
-                <a href="javascript:">Form Elements</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- [ breadcrumb ] end -->
     <div class="main-body">
       <div class="page-wrapper">
         <!-- [ Main Content ] start -->
@@ -36,12 +12,9 @@
           <div class="col-sm-12">
             <div class="card">
               <div class="card-header">
-                <h5>Basic Componant</h5>
+                <h5>Registro de Coches</h5>
               </div>
               <div class="card-body">
-                <h5>Registro de Coches</h5>
-                <hr />
-
                 <div class="row">
                   <div class="col-md-4">
                     <span class="mb-0 text-muted">
@@ -112,12 +85,18 @@
                 {% for marca in marcas %}
                 <div class="card-header">
                   <h5 class="mb-0">{{marca.name}}</h5>
+                  <form action="/coche/delete/{{marca.id}}" method="post" style="display: inline-block;">
+                    <input type="submit" class="border-0 text-white label theme-red" value="Eliminar" role="button" style="cursor: pointer;">
+                  </form>
                 </div>
                 <div class="card-body collapse show">
                   <ul>
                     {% for modelo in marca.modelos %}
                     <li class="mb-0">
                       <h4>{{modelo.name}}</h4>
+                      <form action="/coche/delete/modelo/{{modelo.id}}" method="post" style="display: inline-block;">
+                        <input type="submit" class="border-0 text-white label theme-red" value="Eliminar" role="button" style="cursor: pointer;">
+                      </form>
                     </li>
                     {% endfor %}
                   </ul>

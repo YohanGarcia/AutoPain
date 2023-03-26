@@ -7,12 +7,12 @@ class Empleado(db.Model):
     __tablename__ = "empleados"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    lastname = db.Column(db.String(50), nullable=False)
-    telefono = db.Column(db.String(50), nullable=False, unique=True)
-    telefonocasa = db.Column(db.String(50), nullable=False, unique=True)
-    cedula = db.Column(db.String(50), unique=True)
-    correo = db.Column(db.String(50), unique=True)
-    foto = db.Column(db.Text, nullable=False)
+    lastname = db.Column(db.String(50))
+    telefono = db.Column(db.String(50), unique=True)
+    telefonocasa = db.Column(db.String(50))
+    cedula = db.Column(db.String(50))
+    correo = db.Column(db.String(50))
+    foto = db.Column(db.Text)
     nacimiento = db.Column(db.String(50))
 
     asignaciones = relationship("Asignacion", back_populates="empleados")

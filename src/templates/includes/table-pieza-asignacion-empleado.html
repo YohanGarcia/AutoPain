@@ -4,14 +4,16 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="mb-0">
-                    {{pieza.piezas.name}} {% if pieza.pieza_precio_id is not none %}
-                    {{format_number(pieza.pieza_precios.pieza_precio)}} {%endif%}
+                    {{pieza.piezas.name}} 
+                    {% if pieza.pieza_precio_id is not none %}
+                        {{format_number(pieza.pieza_precios.pieza_precio)}} 
+                    {%endif%}
                 </h5>
                 <div>
                     <form action="/asignacion/delete/pieza/{{pieza.id}}" method="post">
                         <input type="hidden" name="ruta" value={{ruta}}>
 
-                        <button type="submit" class="btn btn-danger text-white" >
+                        <button type="submit" class="btn btn-danger text-white">
                             Eliminar
                         </button>
                     </form>
@@ -29,6 +31,7 @@
                                 <th>Precio</th>
                                 <th>Editar</th>
                                 <th>Eliminar</th>
+                                <th>Estado del trabajo</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -115,11 +118,24 @@
                                     <form action="/asignacion/delete/asignacion/{{item.id}}" method="post">
                                         <input type="hidden" name="ruta" value={{ruta}}>
 
-                                        <button type="submit" class="btn btn-danger text-white" >Eliminar
+                                        <button type="submit" class="btn btn-danger text-white">Eliminar
                                         </button>
                                     </form>
                                 </td>
-
+                                {% if item.status %}
+                                <td>
+                                    <form 
+                                        
+                                        action="/asignacion/status/{{item.id}}" 
+                                        method="post"
+                                    >
+                                        <input type="hidden" name="status" value={{ruta}}>
+                                        <input type="submit" value="Terminar trabajo" class="btn btn-primary">
+                                    </form>
+                                </td>
+                                {% else %}
+                                <td>Treminado</td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>

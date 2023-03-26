@@ -1,9 +1,14 @@
 <div class="col-md-12">
     <div class="col-md-12">
         <div class="form-group">
-            <select id="piezas" name="mymultiselect" data-live-search="true"
-                class="selectpicker form-control form-control-lg" multiple>
-                <option disabled selected>Seleccionar piezas:</option>
+            <select 
+                id="choices-multiple-remove-button"
+                name="mymultiselect" 
+                data-live-search="true" 
+                class="selectpicker form-control form-control-lg" 
+                multiple
+                placeholder="Seleciona las piezas a pintar"
+            >
                 {% for pieza in piezas %}
                 <option value="{{ pieza.id }}">{{pieza.name}}</option>
                 {% endfor %}
@@ -14,3 +19,23 @@
         <button type="submit" class="btn btn-primary ml-4 mb-3">Submit</button>
     </div>
 </div>
+
+<!-- <div class="row d-flex justify-content-center mt-100">
+    <div class="col-md-6">
+        <select id="choices-multiple-remove-button" placeholder="Select upto 5 tags" multiple>
+            <option value="HTML">HTML</option>
+            <option value="Jquery">Jquery</option>
+            <option value="CSS">CSS</option>
+            <option value="Bootstrap 3">Bootstrap 3</option>
+            <option value="Bootstrap 4">Bootstrap 4</option>
+            <option value="Java">Java</option>
+            <option value="Javascript">Javascript</option>
+            <option value="Angular">Angular</option>
+            <option value="Python">Python</option>
+            <option value="Hybris">Hybris</option>
+            <option value="SQL">SQL</option>
+            <option value="NOSQL">NOSQL</option>
+            <option value="NodeJS">NodeJS</option>
+        </select>
+    </div>
+</div> -->

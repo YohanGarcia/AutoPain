@@ -4,9 +4,12 @@ from flask import (
 )
 
 from src import db
+
 from src.heltper.editar_asignacion_empleado import Editar_asignacion_empleado
 from src.heltper.eliminar_asinacion_empleado import Eliminar_asignacion_empleado
 from src.heltper.Eliminar_servicio_pieza import Eliminar_servicio_pieza
+from src.heltper.cambiar_status import Cambiar_status
+
 from src.models.Asignacion import Asignacion
 from src.models.Servicio import Serviciopieza
 from src.models.Trabajos import Trabajo, TrabajoPrecio
@@ -120,17 +123,18 @@ def asignacion_brillado_general(servicio_id, vehiculo_id):
             flash('Registrado exictosamente!.')
     return redirect(url_for('brillado-completo.index', servicio_id=servicio_id, vehiculo_id=vehiculo_id))
 
-@asignacion.route('/<int:serviciopieza_id>/<int:servicio_id>/vehiculo/<int:vehiculo_id>', methods=['GET','POST'])
-def cambiar_asignacion(servicio_id,vehiculo_id,serviciopieza_id):
-    asigncion_cambiar = Asignacion.query.filter_by(serviciopieza_id=serviciopieza_id).first()
+
+@asignacion.route('/<int:serviciopieza_id>/<int:servicio_id>/vehiculo/<int:vehiculo_id>', methods=['GET', 'POST'])
+def cambiar_asignacion(servicio_id, vehiculo_id, serviciopieza_id):
+    asigncion_cambiar = Asignacion.query.filter_by(
+        serviciopieza_id=serviciopieza_id).first()
     if not asigncion_cambiar:
         print('Error no encontro esa informacion')
     else:
         if request.method == 'POST':
             empleado = request.form.get('empleado')
             precio = request.form.get('precio')
-            
-    
+
             if not empleado:
                 flash('selecione un empleado')
             elif not precio:
@@ -140,7 +144,7 @@ def cambiar_asignacion(servicio_id,vehiculo_id,serviciopieza_id):
                 asigncion_cambiar.precio = precio
                 db.session.commit()
                 flash('Cambio exictoso!')
-    return redirect(url_for('pintura-general.index', vehiculo_id=vehiculo_id,servicio_id=servicio_id))
+    return redirect(url_for('pintura-general.index', vehiculo_id=vehiculo_id, servicio_id=servicio_id))
 
 
 @asignacion.route('/trabajoprecio', methods=['POST', 'GET'])
@@ -158,12 +162,31 @@ def carbram():
             OutputArray.append(outputObj)
     return jsonify(OutputArray)
 
+@asignacion.route("/get_cars/<trabajo_id>")
+def get_cars(trabajo_id):
+  cars = TrabajoPrecio.query.filter_by(trabajo_id=trabajo_id).all()
+  return jsonify([{"id": car.id, "name": car.name} for car in cars])
 
 
 @asignacion.route('/delete/asignacion/<int:asignacion_id>', methods=['POST'])
 def delete_asignacion(asignacion_id):
     ruta = request.form.get('ruta')
     return Eliminar_asignacion_empleado(id=asignacion_id, ruta=ruta)
+
+
+@asignacion.route('/status/<int:id>', methods=['POST'])
+def status(id):
+    asignacones = Asignacion.query.filter_by(id=id).first()
+    ruta = request.form.get('status')
+    
+    if asignacones:
+        # Obtener el valor del checkbox "status"
+        asignacones.status = False
+        db.session.commit()
+        flash('Se canbio el satado')
+        return redirect(ruta)
+    flash('Error de formulario')
+    return redirect(ruta)
 
 @asignacion.route('/update/asignacion/<int:asignacion_id>', methods=['POST'])
 def update_asignacion(asignacion_id):

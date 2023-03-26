@@ -19,6 +19,15 @@ select.addEventListener("change", function() {
   }
 });
 
+
+function confirmarEliminacion() {
+  return confirm('¿Está seguro de que desea eliminar este elemento?');
+}
+
+function cancelarEliminacion() {
+  document.getElementById('form-eliminar').reset();
+}
+
 // document.getElementById('button1').addEventListener('click', showForm1())
 // document.getElementById('button2').addEventListener('click', showForm2())
 // document.getElementById('button3').addEventListener('click', showForm3())
@@ -63,3 +72,16 @@ if (valorSeleccionado === "UNID") {
 } else if (valorSeleccionado === "Libre") {
   input.value = "Datos para Libre";
 }
+
+
+$(document).ready(function(){
+    
+  var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+     removeItemButton: true,
+     maxItemCount:5,
+     searchResultLimit:5,
+     renderChoiceLimit:5
+   }); 
+  
+  
+});

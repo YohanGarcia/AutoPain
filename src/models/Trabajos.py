@@ -19,7 +19,7 @@ class TrabajoPrecio(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     precio = db.Column(db.Integer, nullable=False)
 
-    trabajo_id = db.Column(db.Integer, db.ForeignKey("trabajos.id"))
+    trabajo_id = db.Column(db.Integer, db.ForeignKey("trabajos.id"), nullable=False)
     trabajos = relationship("Trabajo", back_populates="trabajoprecios")
 
     asignaciones = relationship("Asignacion", back_populates='trabajoprecios')
