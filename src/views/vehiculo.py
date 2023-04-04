@@ -101,51 +101,42 @@ def carbram():
 @vehiculo.route('/<int:vehiculo_id>/servicio/<int:servicio_id>', methods=['GET', 'POST'])
 def delete_servicio(vehiculo_id, servicio_id):
     try:
-        get_servicio = Servicio.query.filter_by(id=servicio_id).first()
-       
-        if get_servicio.serviciolistas:
-            print('test 1')
-            serviciolistas_id = get_servicio.serviciolistas
-            db.session.delete(serviciolistas_id)
-            print('Nombre del servicio eliminado')
+        servicio = Servicio.query.filter_by(id=servicio_id).first()
 
-        if get_servicio.serviciopagos:
-            print('test 2')
+        if servicio is None:
+            flash('El servicio no existe', 'error')
+            return redirect(url_for('.get_vehiculo', vehiculo_id=vehiculo_id))
 
-            for serviciopago in get_servicio.serviciopagos:
-                print('test 3')
-                
+        # Eliminamos los datos relacionados con el servicio
+        if servicio.serviciolistas:
+            db.session.delete(servicio.serviciolistas)
+
+        if servicio.serviciopagos:
+            for serviciopago in servicio.serviciopagos:
                 db.session.delete(serviciopago)
-                print('Pagos del servicio eliminado')
-        if get_servicio.servicioprecios:
-            print('test 4')
 
-            for precio_id_servicio in get_servicio.servicioprecios:
-                print('test 5 1')
-                print(precio_id_servicio)
-                db.session.delete(precio_id_servicio)
-            print('Precio eliminado')
-        if get_servicio.serviciopiezas:
-            print('test 5')
-            for serviciopieza in get_servicio.serviciopiezas:
+        if servicio.servicioprecios:
+            for servicioprecio in servicio.servicioprecios:
+                db.session.delete(servicioprecio)
+
+        if servicio.serviciopiezas:
+            for serviciopieza in servicio.serviciopiezas:
                 if serviciopieza.pieza_precios:
-                    print('test 6')
                     db.session.delete(serviciopieza.pieza_precios)
-                    print('preio de pieza eliminado')
-                print('Piezas eliminadas')
                 db.session.delete(serviciopieza)
-        if get_servicio.asignaciones:
-            print('test 7')
-            for asignaciones in get_servicio.asignaciones:
-                print('test 8')
-                db.session.delete(asignaciones)
-                print('Aasignaciones eliminadas')
 
-        print('test 9')
-        print('test 10')
-        db.session.delete(get_servicio)
+        if servicio.asignaciones:
+            for asignacion in servicio.asignaciones:
+                db.session.delete(asignacion)
+
+        # Finalmente eliminamos el servicio
+        db.session.delete(servicio)
         db.session.commit()
-        print('test 11')
+
+        flash('Servicio eliminado correctamente', 'success')
     except Exception as error:
-        print( error)
+        db.session.rollback()
+        flash('Error al eliminar el servicio', 'error')
+        print(error)
+
     return redirect(url_for('.get_vehiculo', vehiculo_id=vehiculo_id))

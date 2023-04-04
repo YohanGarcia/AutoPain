@@ -19,7 +19,7 @@ class Empleado(db.Model):
     historialventas = relationship("HistorialVentas", back_populates="empleados")
 
     created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    status = db.Column(db.Boolean, unique=False, default=True)
+    status = db.Column(db.Boolean, default=True)
 
     def __repr__(self) -> str:
         return  self.name

@@ -46,23 +46,28 @@
         <ul class="pagination">
           {% if clientes.has_prev %}
           <li class="page-item">
-            <a class="page-link" href="{{ url_for('cliente', page=clientes.prev_num) }}" aria-label="Previous">
+            <a class="page-link" href="{{ url_for('cliente.cliente_all', page=clientes.prev_num) }}" aria-label="Previous">
               {{ '<<<' }} </a>
           </li>
-          {% endif %} {% for number in clientes.iter_pages() %} {% if
-          clientes.page != number %}
+          {% endif %} 
+          {% for page in clientes.iter_pages() %} 
+            {% if page %}
+              {% if clientes.page == page %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for('cliente.cliente_all', page=page) }}">
+                  {{ page }}
+                </a>
+              </li>
+              {% else %}
+              <li class="page-item active">
+                <span class="page-link">{{ page }}<span class="sr-only">(current)</span></span>
+              </li>
+              {% endif %} 
+            {% endif %}
+          {% endfor %} 
+          {% if clientes.has_next %}
           <li class="page-item">
-            <a class="page-link" href="{{ url_for('cliente', page=number) }}">
-              {{ number }}
-            </a>
-          </li>
-          {% else %}
-          <li class="page-item active">
-            <span class="page-link">{{ number }}<span class="sr-only">(current)</span></span>
-          </li>
-          {% endif %} {% endfor %} {% if clientes.has_next %}
-          <li class="page-item">
-            <a class="page-link" href="{{ url_for('cliente', page=clientes.next_num) }}" aria-label="Next">
+            <a class="page-link" href="{{ url_for('cliente.cliente_all', page=clientes.next_num) }}" aria-label="Next">
               {{ '>>>' }}
             </a>
           </li>

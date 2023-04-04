@@ -14,6 +14,14 @@ from src.helper import current_date_format
 
 cliente = Blueprint('cliente', __name__, url_prefix='/cliente')
 
+
+def paginate(query, page=1, per_page=10):
+    """
+    Retorna una instancia de paginación de los resultados de una consulta
+    """
+    return query.paginate(page=page, per_page=per_page)
+
+
 #Registrar usuarios
 @cliente.route('/create', methods=['GET', 'POST'])
 @login_required
@@ -53,12 +61,14 @@ def cliente_create():
 @login_required
 def cliente_all():
     page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 6, type=int)
  
-    clientes = Cliente.query.filter().order_by(Cliente.username,
-        Cliente.lastname,
-        Cliente.telefono).paginate(page=page, per_page=5)
+    clientes_query = Cliente.query.order_by(Cliente.username.desc())
 
-    return render_template('/cliente/index.html', clientes=clientes, current_date_format=current_date_format)
+    # Paginar los resultados
+    paginated_users = paginate(clientes_query, page, per_page)
+
+    return render_template('/cliente/index.html', clientes=paginated_users, current_date_format=current_date_format)
 
 @cliente.route('/ver/<int:cliente_id>')
 @login_required
